@@ -6,3 +6,11 @@
 //
 
 import Foundation
+import UIKit
+
+class SignUpViewModel {
+    
+    var coordinator : SignUpCoordinator?
+    
+    
+}

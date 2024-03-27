@@ -6,3 +6,28 @@
 //
 
 import Foundation
+import UIKit
+
+class SignUpCoordinator {
+   
+    var parentCoordinator : SignInCoordinator?
+    private let navigationController : UINavigationController
+    
+    init( navigationController: UINavigationController) {
+        self.navigationController = navigationController
+    }
+    func start() {
+       
+        let viewModel = SignUpViewModel()
+        let signUpVC = SignUpViewController()
+        
+        viewModel.coordinator = self
+        signUpVC.viewModel = viewModel
+        
+        navigationController.pushViewController(signUpVC, animated: true)
+        
+        
+    }
+  
+    
+}

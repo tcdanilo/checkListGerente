@@ -6,3 +6,21 @@
 //
 
 import Foundation
+import UIKit
+
+class SignInViewModel {
+    
+    var coordinator : SignInCoordinator?
+    
+    func send() {
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+            
+        }
+        
+    }
+   
+    func goToSignUp() {
+        coordinator?.signUp()
+    }
+}

@@ -9,21 +9,31 @@
 /* Begin PBXBuildFile section */
 		9F88E62F2BB352A000EB8315 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E62E2BB352A000EB8315 /* AppDelegate.swift */; };
 		9F88E6312BB352A000EB8315 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6302BB352A000EB8315 /* SceneDelegate.swift */; };
-		9F88E6332BB352A000EB8315 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6322BB352A000EB8315 /* ViewController.swift */; };
-		9F88E6362BB352A000EB8315 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 9F88E6352BB352A000EB8315 /* Base */; };
 		9F88E6382BB352A200EB8315 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F88E6372BB352A200EB8315 /* Assets.xcassets */; };
 		9F88E63B2BB352A200EB8315 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 9F88E63A2BB352A200EB8315 /* Base */; };
+		9F88E6462BB3532200EB8315 /* SignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6452BB3532200EB8315 /* SignInCoordinator.swift */; };
+		9F88E6482BB3533C00EB8315 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6472BB3533C00EB8315 /* SignInViewController.swift */; };
+		9F88E64A2BB3554F00EB8315 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6492BB3554F00EB8315 /* SignInViewModel.swift */; };
+		9F88E64D2BB4473400EB8315 /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E64C2BB4473400EB8315 /* LoadingButton.swift */; };
+		9F88E6502BB455FC00EB8315 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E64F2BB455FC00EB8315 /* SignUpViewController.swift */; };
+		9F88E6542BB4563700EB8315 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6532BB4563700EB8315 /* SignUpViewModel.swift */; };
+		9F88E6562BB4565100EB8315 /* SignUpCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6552BB4565100EB8315 /* SignUpCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9F88E62B2BB352A000EB8315 /* checkListGerente.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = checkListGerente.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F88E62E2BB352A000EB8315 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F88E6302BB352A000EB8315 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		9F88E6322BB352A000EB8315 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		9F88E6352BB352A000EB8315 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9F88E6372BB352A200EB8315 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F88E63A2BB352A200EB8315 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9F88E63C2BB352A200EB8315 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9F88E6452BB3532200EB8315 /* SignInCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCoordinator.swift; sourceTree = "<group>"; };
+		9F88E6472BB3533C00EB8315 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		9F88E6492BB3554F00EB8315 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		9F88E64C2BB4473400EB8315 /* LoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
+		9F88E64F2BB455FC00EB8315 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		9F88E6532BB4563700EB8315 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		9F88E6552BB4565100EB8315 /* SignUpCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +66,76 @@
 		9F88E62D2BB352A000EB8315 /* checkListGerente */ = {
 			isa = PBXGroup;
 			children = (
+				9F88E64B2BB4471600EB8315 /* Common */,
+				9F88E64E2BB455E500EB8315 /* SignUp */,
+				9F88E6422BB352D600EB8315 /* SignIn */,
 				9F88E62E2BB352A000EB8315 /* AppDelegate.swift */,
 				9F88E6302BB352A000EB8315 /* SceneDelegate.swift */,
-				9F88E6322BB352A000EB8315 /* ViewController.swift */,
-				9F88E6342BB352A000EB8315 /* Main.storyboard */,
 				9F88E6372BB352A200EB8315 /* Assets.xcassets */,
 				9F88E6392BB352A200EB8315 /* LaunchScreen.storyboard */,
 				9F88E63C2BB352A200EB8315 /* Info.plist */,
 			);
 			path = checkListGerente;
+			sourceTree = "<group>";
+		};
+		9F88E6422BB352D600EB8315 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				9F88E6442BB352F700EB8315 /* ViewModel */,
+				9F88E6432BB352F100EB8315 /* View */,
+				9F88E6452BB3532200EB8315 /* SignInCoordinator.swift */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
+		9F88E6432BB352F100EB8315 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9F88E6472BB3533C00EB8315 /* SignInViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9F88E6442BB352F700EB8315 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9F88E6492BB3554F00EB8315 /* SignInViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		9F88E64B2BB4471600EB8315 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				9F88E64C2BB4473400EB8315 /* LoadingButton.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		9F88E64E2BB455E500EB8315 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				9F88E6522BB4562200EB8315 /* ViewModel */,
+				9F88E6512BB4560400EB8315 /* View */,
+				9F88E6552BB4565100EB8315 /* SignUpCoordinator.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		9F88E6512BB4560400EB8315 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9F88E64F2BB455FC00EB8315 /* SignUpViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9F88E6522BB4562200EB8315 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9F88E6532BB4563700EB8315 /* SignUpViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +198,6 @@
 			files = (
 				9F88E6382BB352A200EB8315 /* Assets.xcassets in Resources */,
 				9F88E63B2BB352A200EB8315 /* Base in Resources */,
-				9F88E6362BB352A000EB8315 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +208,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9F88E6332BB352A000EB8315 /* ViewController.swift in Sources */,
+				9F88E64D2BB4473400EB8315 /* LoadingButton.swift in Sources */,
+				9F88E6502BB455FC00EB8315 /* SignUpViewController.swift in Sources */,
+				9F88E6542BB4563700EB8315 /* SignUpViewModel.swift in Sources */,
 				9F88E62F2BB352A000EB8315 /* AppDelegate.swift in Sources */,
+				9F88E64A2BB3554F00EB8315 /* SignInViewModel.swift in Sources */,
+				9F88E6462BB3532200EB8315 /* SignInCoordinator.swift in Sources */,
+				9F88E6482BB3533C00EB8315 /* SignInViewController.swift in Sources */,
 				9F88E6312BB352A000EB8315 /* SceneDelegate.swift in Sources */,
+				9F88E6562BB4565100EB8315 /* SignUpCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		9F88E6342BB352A000EB8315 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9F88E6352BB352A000EB8315 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		9F88E6392BB352A200EB8315 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -297,7 +365,6 @@
 				INFOPLIST_FILE = checkListGerente/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -325,7 +392,6 @@
 				INFOPLIST_FILE = checkListGerente/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
