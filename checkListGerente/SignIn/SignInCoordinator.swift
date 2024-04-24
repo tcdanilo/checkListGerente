@@ -38,6 +38,10 @@ class SignInCoordinator {
         signUpCoordinator.start()
         
     }
+    func home() {
+        let homeCoordinator = HomeCoordinator(window: window)
+        homeCoordinator.start()
+    }
     
     
 }

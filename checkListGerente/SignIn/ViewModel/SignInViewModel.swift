@@ -23,4 +23,7 @@ class SignInViewModel {
     func goToSignUp() {
         coordinator?.signUp()
     }
+    func goToHome() {
+        coordinator?.home()
+    }
 }

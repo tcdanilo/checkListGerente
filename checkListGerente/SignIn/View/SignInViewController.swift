@@ -200,7 +200,7 @@ class SignInViewController: UIViewController {
    
     
     @objc func sendDidTap(_ sender : UIButton) {
-        viewModel?.send()
+        viewModel?.goToHome()
     }
     @objc func registerDidTap(_ sender : UIButton){
         viewModel?.goToSignUp()

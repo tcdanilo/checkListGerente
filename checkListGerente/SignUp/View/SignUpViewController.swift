@@ -73,10 +73,11 @@ class SignUpViewController : UIViewController{
         return ps
     }()
     
-    let register : UIButton = {
+    lazy var register : UIButton = {
         let r = UIButton()
         r.setTitle("Cadastrar", for: .normal)
         r.backgroundColor = .systemOrange
+        r.addTarget(self, action: #selector(registerDidTap), for:.touchUpInside)
         r.translatesAutoresizingMaskIntoConstraints = false
         return r
     }()
@@ -170,6 +171,8 @@ class SignUpViewController : UIViewController{
         
     }
     
+    
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let tap = UIGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -203,8 +206,10 @@ class SignUpViewController : UIViewController{
     }
     
     
-    
-    
+    @objc func registerDidTap() {
+        viewModel?.goToHome()
+        
+    }
     
 
     

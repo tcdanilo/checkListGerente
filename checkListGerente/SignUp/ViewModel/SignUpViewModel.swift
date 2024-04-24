@@ -13,4 +13,9 @@ class SignUpViewModel {
     var coordinator : SignUpCoordinator?
     
     
+    func goToHome() {
+        coordinator?.home()
+    }
+    
+    
 }

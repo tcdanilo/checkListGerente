@@ -28,6 +28,11 @@ class SignUpCoordinator {
         
         
     }
+    func home() {
+        parentCoordinator?.home()
+    }
+    
+    
   
     
 }

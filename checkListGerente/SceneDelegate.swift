@@ -13,14 +13,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+       
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-        //                 window representa a caixa do iPhone (tela), utilizando o "windowScene.coordinateSpace.bounds" pega todas as coordenadas (dimensões do iPhone)
-        window?.windowScene = windowScene  // Esse é o objeto que possui a cena principal
+        window?.windowScene = windowScene
         let signIn = SignInCoordinator(window: window)
         signIn.start()
-        
-        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
