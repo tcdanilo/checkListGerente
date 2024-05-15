@@ -32,6 +32,9 @@ class SignUpCoordinator {
     func home() {
         parentCoordinator?.homeAdmin()
     }
+    func homeUser() {
+        parentCoordinator?.homeUser()
+    }
     
     
   
