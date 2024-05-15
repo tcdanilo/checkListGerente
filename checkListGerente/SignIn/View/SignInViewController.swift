@@ -11,14 +11,14 @@ import Firebase
 
 class SignInViewController: UIViewController {
     
-  
+    
     let scroll: UIScrollView = {
         let sc = UIScrollView()
         sc.translatesAutoresizingMaskIntoConstraints = false
-
+        
         return sc
     }()
-   
+    
     let container : UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -36,43 +36,46 @@ class SignInViewController: UIViewController {
         return l
     }()
     
-
+    
     lazy var email : UITextField = {
-    let em = UITextField()
-    em.borderStyle = .roundedRect
-    em.placeholder = "Digite seu e-mail"
-    em.keyboardType = .emailAddress
-    em.delegate = self
-    em.returnKeyType = .next
-    em.translatesAutoresizingMaskIntoConstraints = false
-    return em
+        let em = UITextField()
+        em.borderStyle = .roundedRect
+        em.placeholder = "Digite seu e-mail"
+        em.keyboardType = .emailAddress
+        em.autocapitalizationType = .none
+        em.delegate = self
+        em.returnKeyType = .next
+        em.translatesAutoresizingMaskIntoConstraints = false
+        return em
     }()
     
     lazy var password : UITextField = {
-    let ps = UITextField()
-    ps.borderStyle = .roundedRect
-    ps.placeholder = "Digite sua senha"
-    ps.returnKeyType = .done
-    ps.delegate = self
-    ps.translatesAutoresizingMaskIntoConstraints = false
-    return ps
+        let ps = UITextField()
+        ps.borderStyle = .roundedRect
+        ps.placeholder = "Digite sua senha"
+        ps.returnKeyType = .done
+        ps.autocapitalizationType = .none
+        ps.isSecureTextEntry = true
+        ps.delegate = self
+        ps.translatesAutoresizingMaskIntoConstraints = false
+        return ps
     }()
     
     lazy var login: LoadingButton = {
-    let btn = LoadingButton()
-    btn.backgroundColor = .systemOrange
-    btn.title = "Entrar"
-    btn.addTarget(self, action: #selector(sendDidTap))
-    return btn
+        let btn = LoadingButton()
+        btn.backgroundColor = .systemOrange
+        btn.title = "Entrar"
+        btn.addTarget(self, action: #selector(sendDidTap))
+        return btn
     }()
     
     lazy var register : UIButton = {
-    let btn = UIButton()
-    btn.setTitle("Primeiro acesso", for: .normal)
-    btn.setTitleColor(.label, for: .normal)
-    btn.addTarget(self, action: #selector(registerDidTap), for: .touchUpInside)
-    btn.translatesAutoresizingMaskIntoConstraints = false
-    return btn
+        let btn = UIButton()
+        btn.setTitle("Primeiro acesso", for: .normal)
+        btn.setTitleColor(.label, for: .normal)
+        btn.addTarget(self, action: #selector(registerDidTap), for: .touchUpInside)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
     }()
     
     
@@ -114,7 +117,7 @@ class SignInViewController: UIViewController {
             logo.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -100),
             logo.widthAnchor.constraint(equalToConstant: 200),
             logo.heightAnchor.constraint(equalToConstant: 200)
-        
+            
         ]
         
         let heigthConstraints = container.heightAnchor.constraint(equalTo: view.heightAnchor)
@@ -126,28 +129,28 @@ class SignInViewController: UIViewController {
             email.trailingAnchor.constraint(equalTo: container.trailingAnchor),
             email.topAnchor.constraint(equalTo:logo.bottomAnchor, constant: -10.0),
             email.heightAnchor.constraint(equalToConstant: 50.0)
-           
+            
         ]
         let passwordConstraints = [
             password.leadingAnchor.constraint(equalTo: email.leadingAnchor),
             password.trailingAnchor.constraint(equalTo: email.trailingAnchor),
             password.topAnchor.constraint(equalTo: email.bottomAnchor, constant: 10.0),
             password.heightAnchor.constraint(equalToConstant: 50.0)
-        
+            
         ]
         let loginConstraints = [
             login.leadingAnchor.constraint(equalTo: password.leadingAnchor),
             login.trailingAnchor.constraint(equalTo: password.trailingAnchor),
             login.topAnchor.constraint(equalTo: password.bottomAnchor, constant: 30.0),
             login.heightAnchor.constraint(equalToConstant: 50.0)
-        
+            
         ]
         let registerConstraints = [
             register.leadingAnchor.constraint(equalTo: login.leadingAnchor),
             register.trailingAnchor.constraint(equalTo: login.trailingAnchor),
             register.topAnchor.constraint(equalTo: login.bottomAnchor, constant: 15.0),
             register.heightAnchor.constraint(equalToConstant: 50.0)
-        
+            
         ]
         NSLayoutConstraint.activate(registerConstraints)
         NSLayoutConstraint.activate(loginConstraints)
@@ -156,7 +159,7 @@ class SignInViewController: UIViewController {
         NSLayoutConstraint.activate(scrollConstraints)
         NSLayoutConstraint.activate(containerConstraints)
         NSLayoutConstraint.activate(logoConstraints)
-
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
         
@@ -185,7 +188,7 @@ class SignInViewController: UIViewController {
             onKeyboardChanged(visible, height: keyboardSize.height)
         }
     }
-   
+    
     func onKeyboardChanged(_ visible : Bool , height : CGFloat) {
         if (!visible){
             scroll.contentInset = .zero
@@ -196,59 +199,67 @@ class SignInViewController: UIViewController {
             scroll.scrollIndicatorInsets = contentInsets
         }
     }
-   
+    
     func showError(message: String) {
         let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
-        }
-   
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
     
     @objc func sendDidTap(_ sender : UIButton) {
         guard let email = email.text,
-        let password = password.text else {
-                    showError(message: "Por favor, preencha todos os campos.")
-                    return
-                }
-                
-                if let userType = UserManager.shared.loginUser(email: email, password: password) {
-                    switch userType {
-                    case .admin:
-                        // Redirecionar para a tela home do administrador
+              let password = password.text else {
+            showError(message: "Por favor, preencha todos os campos.")
+            return
+        }
+       
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                print("Erro ao fazer login:", error.localizedDescription)
+                showError(message: "Erro ao fazer login")
+            } else {
+                print("Login bem-sucedido!")
+                if let currentUser = Auth.auth().currentUser {
+                    if currentUser.email == "danilotiago3@hotmail.com" {
                         viewModel?.goToHomeAdmin()
-                    case .user:
-                        // Redirecionar para a tela home do usuário
+                    }else {
                         viewModel?.goToHomeUser()
                     }
-                } else {
-                    showError(message: "Usuário ou senha inválidos.")
+                    
                 }
-        
-        
-        
-       
-    }
-
-    @objc func registerDidTap(_ sender : UIButton){
-        viewModel?.goToSignUp()
-    }
-    
-   
-}
-
-extension SignInViewController : UITextFieldDelegate {
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if (textField.returnKeyType == .done){
-            view.endEditing(true)
-            print("entrar!")
-        }else {
-            password.becomeFirstResponder()
+             
+            }
+            
+            
+          
+        }
+            
         }
         
-        return false
+        @objc func registerDidTap(_ sender : UIButton){
+            viewModel?.goToSignUp()
+        }
+        
+}
+    
+    
+    extension SignInViewController : UITextFieldDelegate {
+        
+        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+            if (textField.returnKeyType == .done){
+                view.endEditing(true)
+                print("entrar!")
+            }else {
+                password.becomeFirstResponder()
+            }
+            
+            return false
+        }
+        
+        
     }
     
-    
-}
 
