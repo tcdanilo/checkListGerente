@@ -38,6 +38,15 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         return ed
     }()
     
+    let changePassword : UIButton = {
+        let ed = UIButton(type: .system)
+        ed.translatesAutoresizingMaskIntoConstraints = false
+        ed.tintColor = .systemRed
+        ed.setTitle("Alterar senha", for: .normal)
+        return ed
+        
+    }()
+    
   
     
     override func viewDidLoad() {
@@ -46,6 +55,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         view.addSubview(img)
         view.addSubview(addImageButton)
         view.addSubview(usuario)
+        view.addSubview(changePassword)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sair", style: .done, target: self, action: #selector(logoffTapped))
         navigationItem.rightBarButtonItem?.tintColor = .red
         
@@ -65,10 +75,14 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
             usuario.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             usuario.topAnchor.constraint(equalTo: addImageButton.bottomAnchor, constant: 20)
         ]
-        
+        let changePasswordConstraints = [
+            changePassword.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            changePassword.topAnchor.constraint(equalTo: usuario.bottomAnchor, constant: 20)
+            
+        ]
        
        
-        
+        NSLayoutConstraint.activate(changePasswordConstraints)
         NSLayoutConstraint.activate(imgConstraints)
         NSLayoutConstraint.activate(imageButtonConstraints)
         NSLayoutConstraint.activate(usuarioConstraints)
