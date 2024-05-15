@@ -19,12 +19,12 @@ class AddChecklistCoordinator {
     func start() {
        
         let viewModel = AddChecklistViewModel()
-        let AddChecklistVC = AddChecklistViewController()
+        let addChecklistVC = AddChecklistViewController()
         
         viewModel.coordinator = self
-        AddChecklistVC.viewModel = viewModel
+        addChecklistVC.viewModel = viewModel
         
-        navigationController.pushViewController(AddChecklistVC, animated: true)
+        navigationController.pushViewController(addChecklistVC, animated: true)
         
         
     }

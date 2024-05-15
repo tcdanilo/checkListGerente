@@ -16,6 +16,7 @@ class SignUpCoordinator {
     init( navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
+    
     func start() {
        
         let viewModel = SignUpViewModel()
@@ -29,7 +30,7 @@ class SignUpCoordinator {
         
     }
     func home() {
-        parentCoordinator?.home()
+        parentCoordinator?.homeAdmin()
     }
     
     

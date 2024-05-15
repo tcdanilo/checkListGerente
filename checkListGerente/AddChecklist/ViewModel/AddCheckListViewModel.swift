@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 class AddChecklistViewModel {
     
-    var coordinator :AddChecklistCoordinator?
+    var coordinator : AddChecklistCoordinator?
     
     
 }

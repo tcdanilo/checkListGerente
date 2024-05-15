@@ -6,3 +6,10 @@
 //
 
 import Foundation
+class FeedUserViewModel {
+    var coordinator : FeedUserCoordinator?
+    
+ 
+    
+    
+}

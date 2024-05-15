@@ -6,3 +6,10 @@
 //
 
 import Foundation
+import UIKit
+
+class HomeUserViewModel {
+    
+    var coordinator : HomeUserCoordinator?
+    
+}

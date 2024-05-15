@@ -6,3 +6,24 @@
 //
 
 import Foundation
+import UIKit
+
+class HomeUserCoordinator {
+    
+    
+    private let window : UIWindow?
+    
+    init(window : UIWindow?) {
+        
+        self.window = window
+        
+    }
+    
+    func start(){
+        
+        let homeVC = HomeUserViewController()
+        window?.rootViewController = homeVC
+      
+    }
+    
+}

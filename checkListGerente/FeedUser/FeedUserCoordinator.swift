@@ -6,3 +6,14 @@
 //
 
 import Foundation
+import UIKit
+
+class FeedUserCoordinator{
+   
+    private let navigationController : UINavigationController
+    
+    init(navigationController: UINavigationController) {
+        self.navigationController = navigationController
+    }
+    
+}

@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F0B47BD2BF4F96A009D1CEA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F0B47BC2BF4F96A009D1CEA /* GoogleService-Info.plist */; };
 		9F1B05212BD94F1700C3C264 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B05202BD94F1700C3C264 /* ReportViewController.swift */; };
 		9F650A862BB5B5DD0083C792 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F650A852BB5B5DD0083C792 /* FeedTableViewCell.swift */; };
+		9F65DFF22BD996D5002F24A3 /* FeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65DFF12BD996D5002F24A3 /* FeedCoordinator.swift */; };
+		9F65DFF52BD99924002F24A3 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65DFF42BD99924002F24A3 /* FeedViewModel.swift */; };
 		9F88E62F2BB352A000EB8315 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E62E2BB352A000EB8315 /* AppDelegate.swift */; };
 		9F88E6312BB352A000EB8315 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6302BB352A000EB8315 /* SceneDelegate.swift */; };
 		9F88E6382BB352A200EB8315 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F88E6372BB352A200EB8315 /* Assets.xcassets */; };
@@ -25,14 +28,27 @@
 		9F88E6612BB4C04E00EB8315 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6602BB4C04E00EB8315 /* HomeViewModel.swift */; };
 		9F88E6652BB4C71300EB8315 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6642BB4C71300EB8315 /* FeedViewController.swift */; };
 		9F88E6672BB4C72600EB8315 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6662BB4C72600EB8315 /* ProfileViewController.swift */; };
+		9FEC77B92BF4E1BD00523BCC /* HomeUserCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77B82BF4E1BD00523BCC /* HomeUserCoordinator.swift */; };
+		9FEC77BB2BF4E1CA00523BCC /* HomeUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77BA2BF4E1CA00523BCC /* HomeUserViewController.swift */; };
+		9FEC77BD2BF4E1D600523BCC /* HomeUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77BC2BF4E1D600523BCC /* HomeUserViewModel.swift */; };
+		9FEC77C32BF4E3F600523BCC /* FeedUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77C22BF4E3F600523BCC /* FeedUserViewModel.swift */; };
+		9FEC77C52BF4E69500523BCC /* FeedUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77C42BF4E69500523BCC /* FeedUserTableViewCell.swift */; };
+		9FEC77C72BF4E6E500523BCC /* FeedUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77C62BF4E6E500523BCC /* FeedUserViewController.swift */; };
+		9FEC77C92BF4E81200523BCC /* FeedUserCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77C82BF4E81200523BCC /* FeedUserCoordinator.swift */; };
+		9FEC77CD2BF4E91800523BCC /* ProfileUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77CC2BF4E91800523BCC /* ProfileUserViewController.swift */; };
+		9FEC77CF2BF4E9ED00523BCC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77CE2BF4E9ED00523BCC /* User.swift */; };
+		9FEC77D12BF4EA7800523BCC /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77D02BF4EA7800523BCC /* UserManager.swift */; };
 		9FF5FF402BD7F15A00EF7877 /* AddCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF5FF3F2BD7F15A00EF7877 /* AddCheckViewController.swift */; };
 		9FF5FF4B2BD7F7C300EF7877 /* AddChecklistCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF5FF4A2BD7F7C300EF7877 /* AddChecklistCoordinator.swift */; };
 		9FF5FF4D2BD7F8BA00EF7877 /* AddCheckListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF5FF4C2BD7F8BA00EF7877 /* AddCheckListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9F0B47BC2BF4F96A009D1CEA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9F1B05202BD94F1700C3C264 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		9F650A852BB5B5DD0083C792 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
+		9F65DFF12BD996D5002F24A3 /* FeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCoordinator.swift; sourceTree = "<group>"; };
+		9F65DFF42BD99924002F24A3 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		9F88E62B2BB352A000EB8315 /* checkListGerente.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = checkListGerente.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F88E62E2BB352A000EB8315 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F88E6302BB352A000EB8315 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +67,16 @@
 		9F88E6602BB4C04E00EB8315 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		9F88E6642BB4C71300EB8315 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		9F88E6662BB4C72600EB8315 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		9FEC77B82BF4E1BD00523BCC /* HomeUserCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserCoordinator.swift; sourceTree = "<group>"; };
+		9FEC77BA2BF4E1CA00523BCC /* HomeUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserViewController.swift; sourceTree = "<group>"; };
+		9FEC77BC2BF4E1D600523BCC /* HomeUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserViewModel.swift; sourceTree = "<group>"; };
+		9FEC77C22BF4E3F600523BCC /* FeedUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUserViewModel.swift; sourceTree = "<group>"; };
+		9FEC77C42BF4E69500523BCC /* FeedUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUserTableViewCell.swift; sourceTree = "<group>"; };
+		9FEC77C62BF4E6E500523BCC /* FeedUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUserViewController.swift; sourceTree = "<group>"; };
+		9FEC77C82BF4E81200523BCC /* FeedUserCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUserCoordinator.swift; sourceTree = "<group>"; };
+		9FEC77CC2BF4E91800523BCC /* ProfileUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUserViewController.swift; sourceTree = "<group>"; };
+		9FEC77CE2BF4E9ED00523BCC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		9FEC77D02BF4EA7800523BCC /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		9FF5FF3F2BD7F15A00EF7877 /* AddCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCheckViewController.swift; sourceTree = "<group>"; };
 		9FF5FF4A2BD7F7C300EF7877 /* AddChecklistCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChecklistCoordinator.swift; sourceTree = "<group>"; };
 		9FF5FF4C2BD7F8BA00EF7877 /* AddCheckListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCheckListViewModel.swift; sourceTree = "<group>"; };
@@ -67,13 +93,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9F1B051D2BD94EEF00C3C264 /* Report */ = {
+		9F1B051D2BD94EEF00C3C264 /* ReportAdmin */ = {
 			isa = PBXGroup;
 			children = (
 				9F1B051F2BD94EFD00C3C264 /* ViewModel */,
 				9F1B051E2BD94EF700C3C264 /* View */,
 			);
-			path = Report;
+			path = ReportAdmin;
 			sourceTree = "<group>";
 		};
 		9F1B051E2BD94EF700C3C264 /* View */ = {
@@ -87,6 +113,14 @@
 		9F1B051F2BD94EFD00C3C264 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		9F65DFF32BD998FC002F24A3 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9F65DFF42BD99924002F24A3 /* FeedViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -110,11 +144,14 @@
 		9F88E62D2BB352A000EB8315 /* checkListGerente */ = {
 			isa = PBXGroup;
 			children = (
-				9FF5FF3E2BD7F13100EF7877 /* AddCheck */,
-				9FF5FF422BD7F41A00EF7877 /* Profile */,
-				9F1B051D2BD94EEF00C3C264 /* Report */,
-				9FF5FF412BD7F40B00EF7877 /* Feed */,
-				9F88E6592BB4BD2D00EB8315 /* Home */,
+				9FF5FF3E2BD7F13100EF7877 /* AddChecklist */,
+				9FF5FF422BD7F41A00EF7877 /* ProfileAdmin */,
+				9F1B051D2BD94EEF00C3C264 /* ReportAdmin */,
+				9FF5FF412BD7F40B00EF7877 /* FeedAdmin */,
+				9F88E6592BB4BD2D00EB8315 /* HomeAdmin */,
+				9FEC77B52BF4E16A00523BCC /* HomeUser */,
+				9FEC77BE2BF4E35D00523BCC /* FeedUser */,
+				9FEC77BF2BF4E36D00523BCC /* ProfileUser */,
 				9F88E64B2BB4471600EB8315 /* Common */,
 				9F88E64E2BB455E500EB8315 /* SignUp */,
 				9F88E6422BB352D600EB8315 /* SignIn */,
@@ -123,6 +160,7 @@
 				9F88E6372BB352A200EB8315 /* Assets.xcassets */,
 				9F88E6392BB352A200EB8315 /* LaunchScreen.storyboard */,
 				9F88E63C2BB352A200EB8315 /* Info.plist */,
+				9F0B47BC2BF4F96A009D1CEA /* GoogleService-Info.plist */,
 			);
 			path = checkListGerente;
 			sourceTree = "<group>";
@@ -157,6 +195,8 @@
 			isa = PBXGroup;
 			children = (
 				9F88E64C2BB4473400EB8315 /* LoadingButton.swift */,
+				9FEC77CE2BF4E9ED00523BCC /* User.swift */,
+				9FEC77D02BF4EA7800523BCC /* UserManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -187,14 +227,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		9F88E6592BB4BD2D00EB8315 /* Home */ = {
+		9F88E6592BB4BD2D00EB8315 /* HomeAdmin */ = {
 			isa = PBXGroup;
 			children = (
 				9F88E65B2BB4BD3C00EB8315 /* ViewModel */,
 				9F88E65A2BB4BD3700EB8315 /* View */,
 				9F88E65C2BB4BD4B00EB8315 /* HomeCoordinator.swift */,
 			);
-			path = Home;
+			path = HomeAdmin;
 			sourceTree = "<group>";
 		};
 		9F88E65A2BB4BD3700EB8315 /* View */ = {
@@ -213,31 +253,110 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		9FF5FF3E2BD7F13100EF7877 /* AddCheck */ = {
+		9FEC77B52BF4E16A00523BCC /* HomeUser */ = {
 			isa = PBXGroup;
 			children = (
-				9FF5FF492BD7F79900EF7877 /* ViewModel */,
-				9FF5FF442BD7F48A00EF7877 /* View */,
+				9FEC77B62BF4E18E00523BCC /* ViewModel */,
+				9FEC77B72BF4E19A00523BCC /* View */,
+				9FEC77B82BF4E1BD00523BCC /* HomeUserCoordinator.swift */,
+			);
+			path = HomeUser;
+			sourceTree = "<group>";
+		};
+		9FEC77B62BF4E18E00523BCC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9FEC77BC2BF4E1D600523BCC /* HomeUserViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		9FEC77B72BF4E19A00523BCC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9FEC77BA2BF4E1CA00523BCC /* HomeUserViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9FEC77BE2BF4E35D00523BCC /* FeedUser */ = {
+			isa = PBXGroup;
+			children = (
+				9FEC77C02BF4E3AC00523BCC /* ViewModel */,
+				9FEC77C12BF4E3B400523BCC /* View */,
+				9FEC77C82BF4E81200523BCC /* FeedUserCoordinator.swift */,
+			);
+			path = FeedUser;
+			sourceTree = "<group>";
+		};
+		9FEC77BF2BF4E36D00523BCC /* ProfileUser */ = {
+			isa = PBXGroup;
+			children = (
+				9FEC77CB2BF4E87300523BCC /* ViewModel */,
+				9FEC77CA2BF4E86F00523BCC /* View */,
+			);
+			path = ProfileUser;
+			sourceTree = "<group>";
+		};
+		9FEC77C02BF4E3AC00523BCC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9FEC77C22BF4E3F600523BCC /* FeedUserViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		9FEC77C12BF4E3B400523BCC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9FEC77C42BF4E69500523BCC /* FeedUserTableViewCell.swift */,
+				9FEC77C62BF4E6E500523BCC /* FeedUserViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9FEC77CA2BF4E86F00523BCC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9FEC77CC2BF4E91800523BCC /* ProfileUserViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9FEC77CB2BF4E87300523BCC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		9FF5FF3E2BD7F13100EF7877 /* AddChecklist */ = {
+			isa = PBXGroup;
+			children = (
 				9FF5FF4A2BD7F7C300EF7877 /* AddChecklistCoordinator.swift */,
+				9FF5FF442BD7F48A00EF7877 /* View */,
+				9FF5FF492BD7F79900EF7877 /* ViewModel */,
 			);
-			path = AddCheck;
+			path = AddChecklist;
 			sourceTree = "<group>";
 		};
-		9FF5FF412BD7F40B00EF7877 /* Feed */ = {
+		9FF5FF412BD7F40B00EF7877 /* FeedAdmin */ = {
 			isa = PBXGroup;
 			children = (
+				9F65DFF32BD998FC002F24A3 /* ViewModel */,
 				9FF5FF432BD7F45000EF7877 /* View */,
+				9F65DFF12BD996D5002F24A3 /* FeedCoordinator.swift */,
 			);
-			path = Feed;
+			path = FeedAdmin;
 			sourceTree = "<group>";
 		};
-		9FF5FF422BD7F41A00EF7877 /* Profile */ = {
+		9FF5FF422BD7F41A00EF7877 /* ProfileAdmin */ = {
 			isa = PBXGroup;
 			children = (
 				9FF5FF482BD7F78D00EF7877 /* ViewModel */,
 				9FF5FF472BD7F78100EF7877 /* View */,
 			);
-			path = Profile;
+			path = ProfileAdmin;
 			sourceTree = "<group>";
 		};
 		9FF5FF432BD7F45000EF7877 /* View */ = {
@@ -324,6 +443,9 @@
 				Base,
 			);
 			mainGroup = 9F88E6222BB352A000EB8315;
+			packageReferences = (
+				9FEC77D42BF4F19000523BCC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 9F88E62C2BB352A000EB8315 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -340,6 +462,7 @@
 			files = (
 				9F88E6382BB352A200EB8315 /* Assets.xcassets in Resources */,
 				9F88E63B2BB352A200EB8315 /* Base in Resources */,
+				9F0B47BD2BF4F96A009D1CEA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,20 +473,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F65DFF22BD996D5002F24A3 /* FeedCoordinator.swift in Sources */,
+				9FEC77C32BF4E3F600523BCC /* FeedUserViewModel.swift in Sources */,
 				9F88E64D2BB4473400EB8315 /* LoadingButton.swift in Sources */,
 				9F88E6502BB455FC00EB8315 /* SignUpViewController.swift in Sources */,
+				9FEC77C52BF4E69500523BCC /* FeedUserTableViewCell.swift in Sources */,
 				9F1B05212BD94F1700C3C264 /* ReportViewController.swift in Sources */,
 				9F88E6542BB4563700EB8315 /* SignUpViewModel.swift in Sources */,
+				9FEC77C92BF4E81200523BCC /* FeedUserCoordinator.swift in Sources */,
+				9FEC77CF2BF4E9ED00523BCC /* User.swift in Sources */,
 				9FF5FF4B2BD7F7C300EF7877 /* AddChecklistCoordinator.swift in Sources */,
 				9F88E62F2BB352A000EB8315 /* AppDelegate.swift in Sources */,
 				9F650A862BB5B5DD0083C792 /* FeedTableViewCell.swift in Sources */,
 				9F88E6672BB4C72600EB8315 /* ProfileViewController.swift in Sources */,
+				9FEC77C72BF4E6E500523BCC /* FeedUserViewController.swift in Sources */,
 				9FF5FF4D2BD7F8BA00EF7877 /* AddCheckListViewModel.swift in Sources */,
+				9FEC77CD2BF4E91800523BCC /* ProfileUserViewController.swift in Sources */,
 				9F88E64A2BB3554F00EB8315 /* SignInViewModel.swift in Sources */,
 				9F88E6462BB3532200EB8315 /* SignInCoordinator.swift in Sources */,
 				9F88E6482BB3533C00EB8315 /* SignInViewController.swift in Sources */,
 				9F88E6612BB4C04E00EB8315 /* HomeViewModel.swift in Sources */,
+				9FEC77BD2BF4E1D600523BCC /* HomeUserViewModel.swift in Sources */,
+				9FEC77BB2BF4E1CA00523BCC /* HomeUserViewController.swift in Sources */,
+				9F65DFF52BD99924002F24A3 /* FeedViewModel.swift in Sources */,
+				9FEC77D12BF4EA7800523BCC /* UserManager.swift in Sources */,
 				9F88E65F2BB4BFB100EB8315 /* HomeViewController.swift in Sources */,
+				9FEC77B92BF4E1BD00523BCC /* HomeUserCoordinator.swift in Sources */,
 				9F88E65D2BB4BD4B00EB8315 /* HomeCoordinator.swift in Sources */,
 				9F88E6312BB352A000EB8315 /* SceneDelegate.swift in Sources */,
 				9FF5FF402BD7F15A00EF7877 /* AddCheckViewController.swift in Sources */,
@@ -581,6 +716,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9FEC77D42BF4F19000523BCC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.26.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 9F88E6232BB352A000EB8315 /* Project object */;
 }

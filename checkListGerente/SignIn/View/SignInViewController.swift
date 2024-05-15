@@ -10,8 +10,6 @@ import UIKit
 class SignInViewController: UIViewController {
     
   
-    
-    
     let scroll: UIScrollView = {
         let sc = UIScrollView()
         sc.translatesAutoresizingMaskIntoConstraints = false
@@ -197,11 +195,38 @@ class SignInViewController: UIViewController {
         }
     }
    
+    func showError(message: String) {
+        let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
    
     
     @objc func sendDidTap(_ sender : UIButton) {
-        viewModel?.goToHome()
+        guard let email = email.text,
+        let password = password.text else {
+                    showError(message: "Por favor, preencha todos os campos.")
+                    return
+                }
+                
+                if let userType = UserManager.shared.loginUser(email: email, password: password) {
+                    switch userType {
+                    case .admin:
+                        // Redirecionar para a tela home do administrador
+                        viewModel?.goToHomeAdmin()
+                    case .user:
+                        // Redirecionar para a tela home do usuário
+                        viewModel?.goToHomeUser()
+                    }
+                } else {
+                    showError(message: "Usuário ou senha inválidos.")
+                }
+        
+        
+        
+       
     }
+
     @objc func registerDidTap(_ sender : UIButton){
         viewModel?.goToSignUp()
     }

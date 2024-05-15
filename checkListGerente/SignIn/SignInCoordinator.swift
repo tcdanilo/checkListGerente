@@ -38,9 +38,13 @@ class SignInCoordinator {
         signUpCoordinator.start()
         
     }
-    func home() {
+    func homeAdmin() {
         let homeCoordinator = HomeCoordinator(window: window)
         homeCoordinator.start()
+    }
+    func homeUser(){
+        let homeUserCoordinator = HomeUserCoordinator(window: window)
+        homeUserCoordinator.start()
     }
     
     
