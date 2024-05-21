@@ -56,6 +56,7 @@ class SignInViewController: UIViewController {
         ps.returnKeyType = .done
         ps.autocapitalizationType = .none
         ps.isSecureTextEntry = true
+        ps.textContentType = .oneTimeCode
         ps.delegate = self
         ps.translatesAutoresizingMaskIntoConstraints = false
         return ps
@@ -232,8 +233,6 @@ class SignInViewController: UIViewController {
                 }
              
             }
-            
-            
           
         }
             

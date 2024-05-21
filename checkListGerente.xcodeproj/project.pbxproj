@@ -12,6 +12,8 @@
 		9F650A862BB5B5DD0083C792 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F650A852BB5B5DD0083C792 /* FeedTableViewCell.swift */; };
 		9F65DFF22BD996D5002F24A3 /* FeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65DFF12BD996D5002F24A3 /* FeedCoordinator.swift */; };
 		9F65DFF52BD99924002F24A3 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65DFF42BD99924002F24A3 /* FeedViewModel.swift */; };
+		9F6CE0782BFB8C700093A2B1 /* Extension+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6CE0772BFB8C700093A2B1 /* Extension+UIView.swift */; };
+		9F6CE07B2BFB93B70093A2B1 /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6CE07A2BFB93B70093A2B1 /* PostService.swift */; };
 		9F88E62F2BB352A000EB8315 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E62E2BB352A000EB8315 /* AppDelegate.swift */; };
 		9F88E6312BB352A000EB8315 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F88E6302BB352A000EB8315 /* SceneDelegate.swift */; };
 		9F88E6382BB352A200EB8315 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F88E6372BB352A200EB8315 /* Assets.xcassets */; };
@@ -61,6 +63,8 @@
 		9F650A852BB5B5DD0083C792 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
 		9F65DFF12BD996D5002F24A3 /* FeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCoordinator.swift; sourceTree = "<group>"; };
 		9F65DFF42BD99924002F24A3 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
+		9F6CE0772BFB8C700093A2B1 /* Extension+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+UIView.swift"; sourceTree = "<group>"; };
+		9F6CE07A2BFB93B70093A2B1 /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		9F88E62B2BB352A000EB8315 /* checkListGerente.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = checkListGerente.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F88E62E2BB352A000EB8315 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F88E6302BB352A000EB8315 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -149,6 +153,22 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		9F6CE0762BFB8C5E0093A2B1 /* extension */ = {
+			isa = PBXGroup;
+			children = (
+				9F6CE0772BFB8C700093A2B1 /* Extension+UIView.swift */,
+			);
+			path = extension;
+			sourceTree = "<group>";
+		};
+		9F6CE0792BFB93A60093A2B1 /* Api */ = {
+			isa = PBXGroup;
+			children = (
+				9F6CE07A2BFB93B70093A2B1 /* PostService.swift */,
+			);
+			path = Api;
+			sourceTree = "<group>";
+		};
 		9F88E6222BB352A000EB8315 = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +188,8 @@
 		9F88E62D2BB352A000EB8315 /* checkListGerente */ = {
 			isa = PBXGroup;
 			children = (
+				9F6CE0792BFB93A60093A2B1 /* Api */,
+				9F6CE0762BFB8C5E0093A2B1 /* extension */,
 				9FF5FF3E2BD7F13100EF7877 /* AddChecklist */,
 				9FF5FF422BD7F41A00EF7877 /* ProfileAdmin */,
 				9F1B051D2BD94EEF00C3C264 /* ReportAdmin */,
@@ -527,8 +549,10 @@
 				9FEC77C72BF4E6E500523BCC /* FeedUserViewController.swift in Sources */,
 				9FF5FF4D2BD7F8BA00EF7877 /* AddCheckListViewModel.swift in Sources */,
 				9FEC77CD2BF4E91800523BCC /* ProfileUserViewController.swift in Sources */,
+				9F6CE07B2BFB93B70093A2B1 /* PostService.swift in Sources */,
 				9F88E64A2BB3554F00EB8315 /* SignInViewModel.swift in Sources */,
 				9F88E6462BB3532200EB8315 /* SignInCoordinator.swift in Sources */,
+				9F6CE0782BFB8C700093A2B1 /* Extension+UIView.swift in Sources */,
 				9F88E6482BB3533C00EB8315 /* SignInViewController.swift in Sources */,
 				9F88E6612BB4C04E00EB8315 /* HomeViewModel.swift in Sources */,
 				9FEC77BD2BF4E1D600523BCC /* HomeUserViewModel.swift in Sources */,

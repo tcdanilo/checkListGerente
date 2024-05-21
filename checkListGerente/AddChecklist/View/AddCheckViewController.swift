@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 
-class AddChecklistViewController: UIViewController {
+class AddCheckViewController: UIViewController {
     
     
     var viewModel : AddChecklistViewModel?
@@ -51,30 +51,14 @@ class AddChecklistViewController: UIViewController {
         ed.translatesAutoresizingMaskIntoConstraints = false
         return ed
     }()
-    
-    lazy var store : UITextField = {
-        let ed = UITextField()
-        ed.borderStyle = .roundedRect
-        ed.placeholder = "Digite a loja"
-        ed.delegate = self
-        ed.tag = 3
-        ed.returnKeyType = .done
-        ed.translatesAutoresizingMaskIntoConstraints = false
-        return ed
-    }()
-    
-    lazy var initialTextField : UITextField = {
-        let ed = UITextField()
-        ed.borderStyle = .roundedRect
-        ed.placeholder = "Digite a pergunta"
-        ed.returnKeyType = .done
-        ed.translatesAutoresizingMaskIntoConstraints = false
-        return ed
-    }()
-    
-    var textFields = [UITextField]()
    
-    var lastTextFieldBottomConstraint: NSLayoutConstraint?
+    
+    
+   
+    
+
+    
+   
     
     lazy var addButton : UIButton = {
         let r = UIButton()
@@ -84,15 +68,7 @@ class AddChecklistViewController: UIViewController {
         r.addTarget(self, action: #selector(addTextField), for: .touchUpInside)
         return r
     }()
-    //
-    //        lazy var createChecklist : UIButton = {
-    //            let r = UIButton()
-    //            r.setTitle("Criar", for: .normal)
-    //            r.backgroundColor = .systemOrange
-    //            r.translatesAutoresizingMaskIntoConstraints = false
-    //            return r
-    //        }()
-    //
+   
     
     
     override func viewDidLoad() {
@@ -104,10 +80,9 @@ class AddChecklistViewController: UIViewController {
         scroll.addSubview(container)
         container.addSubview(titleChecklist)
         container.addSubview(userAssigned)
-        container.addSubview(store)
+     
         container.addSubview(addButton)
-        container.addSubview(initialTextField)
-        textFields.append(initialTextField)
+   
         
         
         //    container.addSubview(createChecklist)
@@ -150,27 +125,13 @@ class AddChecklistViewController: UIViewController {
             userAssigned.heightAnchor.constraint(equalToConstant: 50.0)
             
         ]
-        let storeConstrants = [
-            store.leadingAnchor.constraint(equalTo:  userAssigned.leadingAnchor),
-            store.trailingAnchor.constraint(equalTo:  userAssigned.trailingAnchor),
-            store.topAnchor.constraint(equalTo: userAssigned.bottomAnchor, constant: 15.0),
-            store.heightAnchor.constraint(equalToConstant: 50.0)
-            
-        ]
-        
-        let initialTextFieldConstraints = [
-            initialTextField.leadingAnchor.constraint(equalTo:store.leadingAnchor),
-            initialTextField.trailingAnchor.constraint(equalTo: store.trailingAnchor),
-            initialTextField.topAnchor.constraint(equalTo: store.bottomAnchor, constant: 40.0),
-            initialTextField.heightAnchor.constraint(equalToConstant: 50.0)
-            
-        ]
+       
         
         
         let addButtonConstraints = [
-            addButton.leadingAnchor.constraint(equalTo: initialTextField.leadingAnchor),
-            addButton.trailingAnchor.constraint(equalTo:initialTextField.trailingAnchor),
-            addButton.topAnchor.constraint(equalTo: initialTextField.bottomAnchor, constant: 20.0),
+            addButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            addButton.trailingAnchor.constraint(equalTo:container.trailingAnchor),
+            addButton.topAnchor.constraint(equalTo: userAssigned.bottomAnchor, constant: 20.0),
             addButton.heightAnchor.constraint(equalToConstant: 50.0)
         ]
         
@@ -183,9 +144,9 @@ class AddChecklistViewController: UIViewController {
         
         NSLayoutConstraint.activate(titleChecklistConstraints)
         NSLayoutConstraint.activate(userAssignedConstrants)
-        NSLayoutConstraint.activate(storeConstrants)
-        NSLayoutConstraint.activate(initialTextFieldConstraints)
+    
         NSLayoutConstraint.activate(addButtonConstraints)
+       
         // NSLayoutConstraint.activate(createChecklistConstraints)
         
         NSLayoutConstraint.activate(scrollConstraints)
@@ -232,48 +193,16 @@ class AddChecklistViewController: UIViewController {
         }
     }
     @objc func addTextField() {
-        // Criando um novo UITextField
-        let newTextField : UITextField = {
-            let ed = UITextField()
-            ed.borderStyle = .roundedRect
-            ed.placeholder = "Digite a pergunta"
-            ed.returnKeyType = .done
-            ed.translatesAutoresizingMaskIntoConstraints = false
-            return ed
-        }()
-           
-            // Adicionando o novo UITextField ao array
-            textFields.append(newTextField)
-            
-            // Adicionando o novo UITextField à subview
-            container.addSubview(newTextField)
-            
-            // Configurando as restrições de layout do novo UITextField
-        let newTextFieldConstraints = [
-            newTextField.leadingAnchor.constraint(equalTo: initialTextField.leadingAnchor),
-            newTextField.trailingAnchor.constraint(equalTo: initialTextField.trailingAnchor),
-            newTextField.heightAnchor.constraint(equalToConstant: 50.0),
-            newTextField.topAnchor.constraint(equalTo: initialTextField.bottomAnchor,constant: 20),
-        ]
-        NSLayoutConstraint.activate(newTextFieldConstraints)
-        
-
-        if textFields.count > 1, let lastTextField = textFields.last {
-                // Se houver um UITextField anterior, posicionamos o novo UITextField abaixo dele
-                let newTextFieldTopConstraint = newTextField.topAnchor.constraint(equalTo: lastTextField.bottomAnchor, constant: 20)
-                newTextFieldTopConstraint.isActive = true
-            
-                let newAddButtonTopConstraint = addButton.topAnchor.constraint(equalTo: newTextField.bottomAnchor, constant: 20)
-                newAddButtonTopConstraint.isActive = true
-
-            }
-        
-
+        guard let checklistText = titleChecklist.text else {return}
+        PostService.shared.uploadChecklistItem(text: checklistText) {(err,ref) in
+            self.titleChecklist.text = ""
+            self.dismiss(animated: true, completion: nil)
+        }
     }
             
 }
    
-        extension AddChecklistViewController: UITextFieldDelegate {
+        extension AddCheckViewController: UITextFieldDelegate {
         
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
             if (textField.returnKeyType == .done){

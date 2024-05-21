@@ -41,7 +41,17 @@ class SignUpViewController : UIViewController{
     }()
     
     
-    
+    lazy var name : UITextField = {
+        let em = UITextField()
+        em.borderStyle = .roundedRect
+        em.placeholder = "Digite seu nome"
+        em.autocapitalizationType = .none
+        em.delegate = self
+        em.tag = 1
+        em.returnKeyType = .next
+        em.translatesAutoresizingMaskIntoConstraints = false
+        return em
+    }()
     lazy var email : UITextField = {
         let em = UITextField()
         em.borderStyle = .roundedRect
@@ -49,7 +59,7 @@ class SignUpViewController : UIViewController{
         em.keyboardType = .emailAddress
         em.autocapitalizationType = .none
         em.delegate = self
-        em.tag = 1
+        em.tag = 2
         em.returnKeyType = .next
         em.translatesAutoresizingMaskIntoConstraints = false
         return em
@@ -62,7 +72,7 @@ class SignUpViewController : UIViewController{
         ps.autocapitalizationType = .none
         ps.isSecureTextEntry = true
         ps.delegate = self
-        ps.tag = 2
+        ps.tag = 3
         ps.returnKeyType = .done
         ps.translatesAutoresizingMaskIntoConstraints = false
         return ps
@@ -86,6 +96,7 @@ class SignUpViewController : UIViewController{
         
         view.addSubview(scroll)
         scroll.addSubview(container)
+        container.addSubview(name)
         container.addSubview(email)
         container.addSubview(password)
         container.addSubview(register)
@@ -120,13 +131,19 @@ class SignUpViewController : UIViewController{
         ]
         
         
-        
+        let nameConstrants = [
+            name.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            name.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            name.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 15.0),
+            name.heightAnchor.constraint(equalToConstant: 50.0)
+            
+        ]
         
         
         let emailConstrants = [
             email.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             email.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            email.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 15.0),
+            email.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 15.0),
             email.heightAnchor.constraint(equalToConstant: 50.0)
             
         ]
@@ -145,7 +162,7 @@ class SignUpViewController : UIViewController{
             register.heightAnchor.constraint(equalToConstant: 50.0)
         ]
         
-        
+        NSLayoutConstraint.activate(nameConstrants)
         NSLayoutConstraint.activate(emailConstrants)
         NSLayoutConstraint.activate(passwordConstrants)
         NSLayoutConstraint.activate(registerConstraints)
@@ -211,6 +228,7 @@ class SignUpViewController : UIViewController{
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] (authResult, error) in
             
             guard let self = self else { return }
+            
             if let error = error {
                 print("Erro ao registrar usuário:", error.localizedDescription)
                 showError(message: "Erro ao registrar usuário")

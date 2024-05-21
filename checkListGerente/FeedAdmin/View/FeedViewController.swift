@@ -1,11 +1,7 @@
-//
-//  FeedViewController.swift
-//  checkListGerente
-//
-//  Created by Danilo Costa tiago on 27/03/24.
-//
+
 
 import UIKit
+import Firebase
 
 
 
@@ -13,7 +9,12 @@ import UIKit
 class FeedViewController: UIViewController {
     
     var viewModel : FeedViewModel?
-    let sections = ["Checklist 1", "Checklist 2", "Checklist 3" ]
+    var checklistItems = [ChecklistItem]() {
+        didSet{
+            print("todo items was set")
+            homeFeedTable.reloadData()
+        }
+    }
    
   
     private let homeFeedTable : UITableView = { // criação da tabela
@@ -26,6 +27,8 @@ class FeedViewController: UIViewController {
     
     
     
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavBar()
@@ -33,6 +36,11 @@ class FeedViewController: UIViewController {
         viewModel?.coordinator = FeedCoordinator(navigationController: navigationController!)
         view.backgroundColor = .systemBackground
         view.addSubview(homeFeedTable)
+        homeFeedTable.dataSource = self
+        homeFeedTable.delegate = self
+        homeFeedTable.separatorColor = .systemGreen
+        homeFeedTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        fetchItems()
         
  }
     
@@ -47,6 +55,12 @@ class FeedViewController: UIViewController {
         viewModel?.goToAddChecklist()
     }
     
+    private func fetchItems() {
+        PostService.shared.fetchAllItems {(allItems) in
+        self.checklistItems = allItems
+            
+        }
+    }
     
     
     
@@ -62,40 +76,44 @@ class FeedViewController: UIViewController {
 
 }
 extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // implementando o protocolo e suas funçoes obrigatorias
-   // numero de sessões
+    // numero de sessões
     func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        return 1
     }
     // numero de linhas na seção
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return checklistItems.count
     }
     //altura da linha
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 200
+        return 75
     }
     
-  
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {    // altura das sessoes
         return 40.0
     }
- 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {      // titulo da header da collectionView
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 40))
-        let label = UILabel(frame: CGRect(x: 20, y: 0, width: tableView.bounds.width, height: 40))
-        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-        label.textColor = .label
-        label.text = sections[section].uppercased()
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let checklistItem = checklistItems[indexPath.row]
         
-        view.addSubview(label)
-        return view
+        PostService.shared.updateItemStatus(checklistID: checklistItem.id, isComplete: true){ (err,ref) in
+            self.homeFeedTable.deselectRow(at: indexPath, animated: true)
+            self.fetchItems()
+            
+        }
+        
+        
     }
+
+   
     
     //qual a celula para a linha especifica
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
         let cell = tableView.dequeueReusableCell(withIdentifier: FeedTableViewCell.identifier, for: indexPath) as! FeedTableViewCell
-        
+        cell.checklistItem = checklistItems[indexPath.row]
         return cell
         
     }
