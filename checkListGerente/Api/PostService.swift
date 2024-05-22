@@ -12,11 +12,25 @@ struct ChecklistItem {
     var title: String
     var isComplete : Bool
     var id : String
+    var assignedUsers: [String]
     
     init(keyID : String, dictionary: [String: Any]) {
         self.title = dictionary["title"] as? String ?? ""
         self.isComplete = dictionary["isComplete"] as? Bool ?? false
         self.id = dictionary["id"] as? String ?? ""
+        self.assignedUsers = dictionary["assignedUsers"] as? [String] ?? []
+    }
+    
+}
+
+struct AppUser {
+    let name: String
+    let email: String
+    
+    var safeEmail : String {
+        var safeEmail = email.replacingOccurrences(of: ".", with: "-")
+        safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
+        return safeEmail
     }
     
 }
@@ -69,6 +83,32 @@ struct PostService {
     func updateItemStatus(checklistID :String ,isComplete : Bool, completion : @escaping(Error?, DatabaseReference) -> Void) {
         let value = ["isComplete": isComplete]
         db_reference.child("items").child(checklistID).updateChildValues(value, withCompletionBlock: completion)
+    }
+    
+    func assignChecklistItem(checklistID: String, assignedUsers: [String], completion: @escaping(Error?, DatabaseReference) -> Void) {
+            let value = ["assignedUsers": assignedUsers]
+            db_reference.child("items").child(checklistID).updateChildValues(value, withCompletionBlock: completion)
+        }
+   
+    // inserir novo usuario no database
+    public func insertUser(with user: AppUser) {
+        db_reference.child("users").child(user.safeEmail).setValue([
+            "first_name": user.name
+        ])
+        
+    }
+    public func userExists(with email: String, completion : @escaping ((Bool)) -> Void){
+        var safeEmail = email.replacingOccurrences(of: ".", with: "-")
+        safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
+        
+        db_reference.child(safeEmail).observeSingleEvent(of: .value, with: {snapshot in
+            
+            guard snapshot.value as? String != nil else {
+                completion(false)
+                return
+            }
+            completion(true)
+        })
     }
     
     

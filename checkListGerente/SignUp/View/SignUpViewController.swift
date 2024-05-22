@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import FirebaseAuth
+import Firebase
 
 class SignUpViewController : UIViewController{
     
@@ -41,37 +42,38 @@ class SignUpViewController : UIViewController{
     }()
     
     
-    lazy var name : UITextField = {
+    private let nameTextField : UITextField = {
         let em = UITextField()
         em.borderStyle = .roundedRect
         em.placeholder = "Digite seu nome"
         em.autocapitalizationType = .none
-        em.delegate = self
+        
         em.tag = 1
         em.returnKeyType = .next
         em.translatesAutoresizingMaskIntoConstraints = false
         return em
     }()
-    lazy var email : UITextField = {
+    private let emailTextField : UITextField = {
         let em = UITextField()
         em.borderStyle = .roundedRect
         em.placeholder = "Digite seu e-mail"
         em.keyboardType = .emailAddress
         em.autocapitalizationType = .none
-        em.delegate = self
+        
         em.tag = 2
         em.returnKeyType = .next
         em.translatesAutoresizingMaskIntoConstraints = false
         return em
     }()
     
-    lazy var password : UITextField = {
+    
+    private let passwordTextField : UITextField = {
         let ps = UITextField()
         ps.borderStyle = .roundedRect
         ps.placeholder = "Digite sua senha"
         ps.autocapitalizationType = .none
         ps.isSecureTextEntry = true
-        ps.delegate = self
+        
         ps.tag = 3
         ps.returnKeyType = .done
         ps.translatesAutoresizingMaskIntoConstraints = false
@@ -88,20 +90,23 @@ class SignUpViewController : UIViewController{
     }()
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Cadastro"
         view.backgroundColor = .systemBackground
         
+        
         view.addSubview(scroll)
         scroll.addSubview(container)
-        container.addSubview(name)
-        container.addSubview(email)
-        container.addSubview(password)
+        container.addSubview(nameTextField)
+        container.addSubview(emailTextField)
+        container.addSubview(passwordTextField)
         container.addSubview(register)
         container.addSubview(logo)
         
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        nameTextField.delegate = self
         
         let scrollConstraints = [
             scroll.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -132,33 +137,33 @@ class SignUpViewController : UIViewController{
         
         
         let nameConstrants = [
-            name.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            name.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            name.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 15.0),
-            name.heightAnchor.constraint(equalToConstant: 50.0)
+            nameTextField.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            nameTextField.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            nameTextField.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 15.0),
+            nameTextField.heightAnchor.constraint(equalToConstant: 50.0)
             
         ]
         
         
         let emailConstrants = [
-            email.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            email.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            email.topAnchor.constraint(equalTo: name.bottomAnchor, constant: 15.0),
-            email.heightAnchor.constraint(equalToConstant: 50.0)
+            emailTextField.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            emailTextField.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            emailTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 15.0),
+            emailTextField.heightAnchor.constraint(equalToConstant: 50.0)
             
         ]
         let passwordConstrants = [
-            password.leadingAnchor.constraint(equalTo: email.leadingAnchor),
-            password.trailingAnchor.constraint(equalTo: email.trailingAnchor),
-            password.topAnchor.constraint(equalTo: email.bottomAnchor, constant: 15.0),
-            password.heightAnchor.constraint(equalToConstant: 50.0)
+            passwordTextField.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
+            passwordTextField.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
+            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 15.0),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 50.0)
             
         ]
         
         let registerConstraints = [
-            register.leadingAnchor.constraint(equalTo: password.leadingAnchor),
-            register.trailingAnchor.constraint(equalTo: password.trailingAnchor),
-            register.topAnchor.constraint(equalTo: password.bottomAnchor, constant: 30.0),
+            register.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
+            register.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
+            register.topAnchor.constraint(equalTo:passwordTextField.bottomAnchor, constant: 30.0),
             register.heightAnchor.constraint(equalToConstant: 50.0)
         ]
         
@@ -210,72 +215,104 @@ class SignUpViewController : UIViewController{
             scroll.scrollIndicatorInsets = contentInsets
         }
     }
-    func showError(message: String) {
+    func alertingUserLoginError(message: String) {
         let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     func showSucess(message : String){
         let alert = UIAlertController(title: "Sucesso", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default,handler: nil))
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel,handler: nil))
         present(alert,animated: true,completion: nil)
         
     }
     
     
     @objc func registerDidTap() {
-        guard let email = email.text, let password = password.text else { return }
-        Auth.auth().createUser(withEmail: email, password: password) { [weak self] (authResult, error) in
-            
-            guard let self = self else { return }
-            
-            if let error = error {
-                print("Erro ao registrar usuário:", error.localizedDescription)
-                showError(message: "Erro ao registrar usuário")
-                
-            } else {
-                print("Usuário registrado com sucesso!")
-                showSucess(message: "Usuário registrado com sucesso!")
-                let SignInVC = SignInViewController()
-                navigationController?.pushViewController(SignInVC, animated: true)
+        nameTextField.resignFirstResponder()
+        emailTextField.resignFirstResponder()
+        passwordTextField.resignFirstResponder()
+        
+        
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text,
+              let name = nameTextField.text,
+              !email.isEmpty,
+              !name.isEmpty,
+              password.count >= 6 else {
+            alertingUserLoginError(message: "Erro ao registrar usuário")
+            return }
+        
+        PostService.shared.userExists(with: email, completion: {[weak self] exists in
+            guard let strongSelf = self else {
+                return
             }
+            //user existe
+            guard !exists else {
+                strongSelf.alertingUserLoginError(message: "looks like a user account for that email address already exists")
+                return
+            }
+            
+       
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            
+            guard authResult != nil , error == nil else {
+                print("error creating user")
+                return
+            }
+            
+                PostService.shared.insertUser(with: AppUser(name: name, email: email))
+            
+            let SignInVC = SignInViewController()
+            strongSelf.navigationController?.pushViewController(SignInVC, animated: true)
             
         }
         
-       
-        
+    })
     }
 }
+                                      
+    
     
     extension SignUpViewController: UITextFieldDelegate {
         
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-            if (textField.returnKeyType == .done){
-                view.endEditing(true)
-                print("save!")
-                return false
-            }
-            let nextTag = textField.tag + 1
-            let component = container.findViewByTag(tag: nextTag)
             
-            if (component != nil) {
-                component?.becomeFirstResponder()
-            }else {
-                view.endEditing(true)
+            if textField == nameTextField {
+                emailTextField.becomeFirstResponder()
+            }else if textField == emailTextField{
+                passwordTextField.becomeFirstResponder()
+            }else if textField == passwordTextField{
+                registerDidTap()
             }
-            return false
             
+            return true
+//            if (textField.returnKeyType == .done){
+//                view.endEditing(true)
+//                print("save!")
+//                return false
+//            }
+//            let nextTag = textField.tag + 1
+//            let component = container.findViewByTag(tag: nextTag)
+//            
+//            if (component != nil) {
+//                component?.becomeFirstResponder()
+//            }else {
+//                view.endEditing(true)
+//            }
+//            return false
+//            
         }
     }
     
-    extension UIView {
-        func findViewByTag(tag : Int ) -> UIView? {
-            for subview in subviews {
-                if subview.tag == tag {
-                    return subview
-                }
-            }
-            return nil
-        }
-    }
-
+//    extension UIView {
+//        func findViewByTag(tag : Int ) -> UIView? {
+//            for subview in subviews {
+//                if subview.tag == tag {
+//                    return subview
+//                }
+//            }
+//            return nil
+//        }
+//    }
+//
