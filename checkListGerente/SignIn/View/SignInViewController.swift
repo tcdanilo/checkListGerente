@@ -216,18 +216,27 @@ class SignInViewController: UIViewController {
         }
        
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
-            guard let self = self else { return }
+            guard let strongSelf = self else { return }
+            
+            guard let result = authResult, error == nil else {
+                print("falha ao logar o usuario com email : \(email)")
+                return
+            }
+          
+            let user = result.user
+            print("logado com o usuario\(user)")
+            
             
             if let error = error {
                 print("Erro ao fazer login:", error.localizedDescription)
-                showError(message: "Erro ao fazer login")
+                strongSelf.showError(message: "Erro ao fazer login")
             } else {
                 print("Login bem-sucedido!")
                 if let currentUser = Auth.auth().currentUser {
                     if currentUser.email == "danilotiago3@hotmail.com" {
-                        viewModel?.goToHomeAdmin()
+                        strongSelf.viewModel?.goToHomeAdmin()
                     }else {
-                        viewModel?.goToHomeUser()
+                        strongSelf.viewModel?.goToHomeUser()
                     }
                     
                 }

@@ -38,6 +38,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         return ed
     }()
     
+    
     let changePassword : UIButton = {
         let ed = UIButton(type: .system)
         ed.translatesAutoresizingMaskIntoConstraints = false
@@ -88,7 +89,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         NSLayoutConstraint.activate(usuarioConstraints)
       
     }
-   
+  
+    
+    
     @objc func addImageTapped() {
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self

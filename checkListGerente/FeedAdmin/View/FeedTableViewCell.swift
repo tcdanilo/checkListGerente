@@ -15,11 +15,11 @@ class FeedTableViewCell: UITableViewCell {
         didSet {
             titleLabel.text = checklistItem?.title
             if let isComplete = checklistItem?.isComplete, isComplete{
-                assignUserLabel.text = "Atribuidos : Admin"
-                assignUserLabel.textColor = .green
+                isCompleteLabel.text = "Realizado"
+                isCompleteLabel.textColor = .green
             }else{
-                assignUserLabel.text = "Atribuidos : ngm"
-                assignUserLabel.textColor = .red
+                isCompleteLabel.text = "Não Realizado"
+                isCompleteLabel.textColor = .red
             }
         
         }
@@ -32,11 +32,18 @@ class FeedTableViewCell: UITableViewCell {
         label.text = "Title"
         return label
     }()
-    private let assignUserLabel : UILabel = {
+    private let isCompleteLabel : UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18)
         label.textColor = .label
-        label.text = "Atribuidos : Adelson"
+        label.text = "Não realizado"
+        return label
+    }()
+    private let assignedUserLabel : UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 10)
+        label.textColor = .label
+        label.text = "Usuarios atribuidos"
         return label
     }()
     
@@ -45,9 +52,11 @@ class FeedTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .systemOrange
         addSubview(titleLabel)
-        addSubview(assignUserLabel)
+        addSubview(isCompleteLabel)
+        addSubview(assignedUserLabel)
         titleLabel.anchor(top: topAnchor,left: leftAnchor, paddingTop: 4,paddingLeft: 8)
-        assignUserLabel.anchor(top: titleLabel.bottomAnchor, left: leftAnchor, paddingTop: 4, paddingLeft: 8)
+        isCompleteLabel.anchor(top: titleLabel.bottomAnchor, left: leftAnchor, paddingTop: 4, paddingLeft: 8)
+        assignedUserLabel.anchor(top: topAnchor,right: rightAnchor, paddingTop: 4,paddingRight: 8)
       
     }
     

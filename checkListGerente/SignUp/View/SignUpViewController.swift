@@ -261,7 +261,7 @@ class SignUpViewController : UIViewController{
                 return
             }
             
-                PostService.shared.insertUser(with: AppUser(name: name, email: email))
+            PostService.shared.insertUser(with: AppUser(name: name, email: email))
             
             let SignInVC = SignInViewController()
             strongSelf.navigationController?.pushViewController(SignInVC, animated: true)
@@ -287,32 +287,7 @@ class SignUpViewController : UIViewController{
             }
             
             return true
-//            if (textField.returnKeyType == .done){
-//                view.endEditing(true)
-//                print("save!")
-//                return false
-//            }
-//            let nextTag = textField.tag + 1
-//            let component = container.findViewByTag(tag: nextTag)
-//            
-//            if (component != nil) {
-//                component?.becomeFirstResponder()
-//            }else {
-//                view.endEditing(true)
-//            }
-//            return false
-//            
+
         }
     }
     
-//    extension UIView {
-//        func findViewByTag(tag : Int ) -> UIView? {
-//            for subview in subviews {
-//                if subview.tag == tag {
-//                    return subview
-//                }
-//            }
-//            return nil
-//        }
-//    }
-//

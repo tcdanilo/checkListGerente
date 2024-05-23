@@ -12,13 +12,15 @@ struct ChecklistItem {
     var title: String
     var isComplete : Bool
     var id : String
-    var assignedUsers: [String]
+    var assignedUsers : [String]
+  
     
     init(keyID : String, dictionary: [String: Any]) {
         self.title = dictionary["title"] as? String ?? ""
         self.isComplete = dictionary["isComplete"] as? Bool ?? false
         self.id = dictionary["id"] as? String ?? ""
         self.assignedUsers = dictionary["assignedUsers"] as? [String] ?? []
+        
     }
     
 }
@@ -32,6 +34,7 @@ struct AppUser {
         safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
         return safeEmail
     }
+
     
 }
 
@@ -66,7 +69,9 @@ struct PostService {
         }
     }
     func uploadChecklistItem(text : String, completion : @escaping(Error?, DatabaseReference) -> Void) {
-        let values = ["title" : text , "isComplete" : false] as [String : Any]
+        let values = ["title" : text ,
+                      "isComplete" : false,
+                     ] as [String : Any]
         
         let id = db_reference.child("items").childByAutoId()
         id.updateChildValues(values,withCompletionBlock: completion)
@@ -80,23 +85,18 @@ struct PostService {
        
     }
     
-    func updateItemStatus(checklistID :String ,isComplete : Bool, completion : @escaping(Error?, DatabaseReference) -> Void) {
-        let value = ["isComplete": isComplete]
-        db_reference.child("items").child(checklistID).updateChildValues(value, withCompletionBlock: completion)
-    }
-    
-    func assignChecklistItem(checklistID: String, assignedUsers: [String], completion: @escaping(Error?, DatabaseReference) -> Void) {
-            let value = ["assignedUsers": assignedUsers]
-            db_reference.child("items").child(checklistID).updateChildValues(value, withCompletionBlock: completion)
-        }
+
    
     // inserir novo usuario no database
     public func insertUser(with user: AppUser) {
         db_reference.child("users").child(user.safeEmail).setValue([
-            "first_name": user.name
+            "first_name": user.name,
+            "email" : user.email
         ])
         
     }
+    
+    
     public func userExists(with email: String, completion : @escaping ((Bool)) -> Void){
         var safeEmail = email.replacingOccurrences(of: ".", with: "-")
         safeEmail = safeEmail.replacingOccurrences(of: "@", with: "-")
@@ -111,5 +111,28 @@ struct PostService {
         })
     }
     
+    func fetchAllUsers(completion: @escaping ([AppUser]) -> Void) {
+        db_reference.child("users").observeSingleEvent(of: .value) { snapshot in
+                    guard let usersDictionary = snapshot.value as? [String: [String: Any]] else {
+                        completion([])
+                        return
+                    }
+                    
+                    var allUsers = [AppUser]()
+                    
+                    for (_, userData) in usersDictionary {
+                        if let name = userData["first_name"] as? String,
+                           let email = userData["email"] as? String {
+                            let user = AppUser(name: name, email: email)
+                            allUsers.append(user)
+                        }
+                    }
+                    
+                    completion(allUsers)
+                }
+            }
+        
+    
+
     
 }

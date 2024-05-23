@@ -4,8 +4,6 @@ import UIKit
 import Firebase
 
 
-
-
 class FeedViewController: UIViewController {
     
     var viewModel : FeedViewModel?
@@ -23,11 +21,6 @@ class FeedViewController: UIViewController {
         tv.register(FeedTableViewCell.self, forCellReuseIdentifier: FeedTableViewCell.identifier) // registrou a classe que vai ter dentro das celulas , UItableviewcell
         return tv
     }()
-    
-    
-    
-    
-   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,13 +89,10 @@ extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // im
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let checklistItem = checklistItems[indexPath.row]
+       
+        self.fetchItems()
         
-        PostService.shared.updateItemStatus(checklistID: checklistItem.id, isComplete: true){ (err,ref) in
-            self.homeFeedTable.deselectRow(at: indexPath, animated: true)
-            self.fetchItems()
-            
-        }
+
         
         
     }

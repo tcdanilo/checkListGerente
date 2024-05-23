@@ -13,6 +13,7 @@ class AddCheckViewController: UIViewController {
     
     
     var viewModel : AddChecklistViewModel?
+    var users : [AppUser] = []
     
     
     let scroll: UIScrollView = {
@@ -41,28 +42,17 @@ class AddCheckViewController: UIViewController {
         return ed
     }()
     
-    lazy var userAssigned: UITextField = {
-        let ed = UITextField()
-        ed.borderStyle = .roundedRect
-        ed.placeholder = "Digite a quem vai atribuir"
-        ed.delegate = self
-        ed.tag = 2
-        ed.returnKeyType = .next
-        ed.translatesAutoresizingMaskIntoConstraints = false
-        return ed
-    }()
+  
+    let userPicker: UIPickerView = {
+            let picker = UIPickerView()
+            picker.translatesAutoresizingMaskIntoConstraints = false
+            return picker
+        }()
    
-    
-    
-   
-    
-
-    
-   
-    
+ 
     lazy var addButton : UIButton = {
         let r = UIButton()
-        r.setTitle("Adicionar Pergunta", for: .normal)
+        r.setTitle("Criar Checklist", for: .normal)
         r.backgroundColor = .systemOrange
         r.translatesAutoresizingMaskIntoConstraints = false
         r.addTarget(self, action: #selector(addTextField), for: .touchUpInside)
@@ -79,13 +69,14 @@ class AddCheckViewController: UIViewController {
         view.addSubview(scroll)
         scroll.addSubview(container)
         container.addSubview(titleChecklist)
-        container.addSubview(userAssigned)
-     
         container.addSubview(addButton)
-   
+        container.addSubview(userPicker)
+        userPicker.dataSource = self
+        userPicker.delegate = self
+        fetchUsers()
         
         
-        //    container.addSubview(createChecklist)
+        
         
         
         
@@ -118,11 +109,11 @@ class AddCheckViewController: UIViewController {
         ]
         
         
-        let userAssignedConstrants = [
-            userAssigned.leadingAnchor.constraint(equalTo: titleChecklist.leadingAnchor),
-            userAssigned.trailingAnchor.constraint(equalTo:titleChecklist.trailingAnchor),
-            userAssigned.topAnchor.constraint(equalTo: titleChecklist.bottomAnchor, constant: 15.0),
-            userAssigned.heightAnchor.constraint(equalToConstant: 50.0)
+        let userPickerConstraints = [
+            userPicker.leadingAnchor.constraint(equalTo: titleChecklist.leadingAnchor),
+            userPicker.trailingAnchor.constraint(equalTo:titleChecklist.trailingAnchor),
+            userPicker.topAnchor.constraint(equalTo: titleChecklist.bottomAnchor, constant: 15.0),
+            userPicker.heightAnchor.constraint(equalToConstant: 50.0)
             
         ]
        
@@ -131,24 +122,15 @@ class AddCheckViewController: UIViewController {
         let addButtonConstraints = [
             addButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             addButton.trailingAnchor.constraint(equalTo:container.trailingAnchor),
-            addButton.topAnchor.constraint(equalTo: userAssigned.bottomAnchor, constant: 20.0),
+            addButton.topAnchor.constraint(equalTo: userPicker.bottomAnchor, constant: 20.0),
             addButton.heightAnchor.constraint(equalToConstant: 50.0)
         ]
         
-        //        let createChecklistConstraints = [
-        //            createChecklist.leadingAnchor.constraint(equalTo: store.leadingAnchor),
-        //            createChecklist.trailingAnchor.constraint(equalTo: store.trailingAnchor),
-        //            createChecklist.topAnchor.constraint(equalTo: store.bottomAnchor, constant: 30.0),
-        //            createChecklist.heightAnchor.constraint(equalToConstant: 50.0)
-        //        ]
+       
         
         NSLayoutConstraint.activate(titleChecklistConstraints)
-        NSLayoutConstraint.activate(userAssignedConstrants)
-    
+        NSLayoutConstraint.activate(userPickerConstraints)
         NSLayoutConstraint.activate(addButtonConstraints)
-       
-        // NSLayoutConstraint.activate(createChecklistConstraints)
-        
         NSLayoutConstraint.activate(scrollConstraints)
         NSLayoutConstraint.activate(containerConstraints)
         
@@ -192,16 +174,67 @@ class AddCheckViewController: UIViewController {
             scroll.scrollIndicatorInsets = contentInsets
         }
     }
+    
+    func fetchUsers() {
+        PostService.shared.fetchAllUsers { users in
+            DispatchQueue.main.async {
+                if users.isEmpty {
+                    print("Nenhum usuário encontrado.")
+                } else {
+                    self.users = users
+                    self.userPicker.reloadAllComponents()
+                    print("Usuários carregados: \(users.map { $0.name })")
+                }
+            }
+        }
+    }
     @objc func addTextField() {
         guard let checklistText = titleChecklist.text else {return}
+       
         PostService.shared.uploadChecklistItem(text: checklistText) {(err,ref) in
             self.titleChecklist.text = ""
             self.dismiss(animated: true, completion: nil)
+            
         }
+        let feedAdminVC = FeedViewController()
+        self.navigationController?.pushViewController(feedAdminVC, animated: true)
     }
             
 }
-   
+extension AddCheckViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    
+    // MARK: - UIPickerViewDataSource
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1 // Apenas uma coluna para os usuários
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        print(users.count)
+        return users.count // Número de usuários obtidos do Firebase
+        
+    }
+    
+    // MARK: - UIPickerViewDelegate
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        // Retorna o nome do usuário para exibir no UIPickerView
+        return users[row].name
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        guard row < users.count else {
+                    print("Índice selecionado fora do intervalo.")
+                    return
+                }
+                let selectedUser = users[row]
+                print("Usuário selecionado: \(selectedUser.name)")
+            }
+}
+
+
+
+
         extension AddCheckViewController: UITextFieldDelegate {
         
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {
