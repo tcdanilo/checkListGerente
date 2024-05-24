@@ -42,14 +42,14 @@ class AddCheckViewController: UIViewController {
         return ed
     }()
     
-  
+    
     let userPicker: UIPickerView = {
-            let picker = UIPickerView()
-            picker.translatesAutoresizingMaskIntoConstraints = false
-            return picker
-        }()
-   
- 
+        let picker = UIPickerView()
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        return picker
+    }()
+    
+    
     lazy var addButton : UIButton = {
         let r = UIButton()
         r.setTitle("Criar Checklist", for: .normal)
@@ -58,7 +58,7 @@ class AddCheckViewController: UIViewController {
         r.addTarget(self, action: #selector(addTextField), for: .touchUpInside)
         return r
     }()
-   
+    
     
     
     override func viewDidLoad() {
@@ -110,13 +110,13 @@ class AddCheckViewController: UIViewController {
         
         
         let userPickerConstraints = [
-            userPicker.leadingAnchor.constraint(equalTo: titleChecklist.leadingAnchor),
-            userPicker.trailingAnchor.constraint(equalTo:titleChecklist.trailingAnchor),
+            userPicker.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 50.0),
+            userPicker.trailingAnchor.constraint(equalTo:container.trailingAnchor, constant: -50.0),
             userPicker.topAnchor.constraint(equalTo: titleChecklist.bottomAnchor, constant: 15.0),
             userPicker.heightAnchor.constraint(equalToConstant: 50.0)
             
         ]
-       
+        
         
         
         let addButtonConstraints = [
@@ -126,7 +126,7 @@ class AddCheckViewController: UIViewController {
             addButton.heightAnchor.constraint(equalToConstant: 50.0)
         ]
         
-       
+        
         
         NSLayoutConstraint.activate(titleChecklistConstraints)
         NSLayoutConstraint.activate(userPickerConstraints)
@@ -190,17 +190,33 @@ class AddCheckViewController: UIViewController {
     }
     @objc func addTextField() {
         guard let checklistText = titleChecklist.text else {return}
-       
-        PostService.shared.uploadChecklistItem(text: checklistText) {(err,ref) in
+        guard let assignedUser = getSelectedUser() else {return}
+        
+        PostService.shared.uploadChecklistItem(text: checklistText, assignedUser: assignedUser) { (err, ref) in
             self.titleChecklist.text = ""
-            self.dismiss(animated: true, completion: nil)
-            
+            if let navController = self.navigationController {
+                for viewController in navController.viewControllers {
+                    if let feedVC = viewController as? FeedViewController {
+                        feedVC.fetchItems()
+                        navController.popToViewController(feedVC, animated: true)
+                        break
+                    }
+                }
+            } else {
+                self.dismiss(animated: true, completion: nil)
+            }
         }
-        let feedAdminVC = FeedViewController()
-        self.navigationController?.pushViewController(feedAdminVC, animated: true)
     }
+
+    
+    func getSelectedUser() -> AppUser? {
+            let selectedIndex = userPicker.selectedRow(inComponent: 0)
+            guard selectedIndex < users.count else { return nil }
+            return users[selectedIndex]
+        }
             
 }
+
 extension AddCheckViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
     // MARK: - UIPickerViewDataSource

@@ -7,6 +7,7 @@ import Firebase
 class FeedViewController: UIViewController {
     
     var viewModel : FeedViewModel?
+    var currentUser: AppUser?
     var checklistItems = [ChecklistItem]() {
         didSet{
             print("todo items was set")
@@ -48,11 +49,13 @@ class FeedViewController: UIViewController {
         viewModel?.goToAddChecklist()
     }
     
-    private func fetchItems() {
-        PostService.shared.fetchAllItems {(allItems) in
-        self.checklistItems = allItems
-            
-        }
+    public func fetchItems() {
+        PostService.shared.fetchAllItems() { allItems in
+                DispatchQueue.main.async {
+                    self.checklistItems = allItems
+                    self.homeFeedTable.reloadData()
+                }
+            }
     }
     
     

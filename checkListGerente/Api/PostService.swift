@@ -12,17 +12,20 @@ struct ChecklistItem {
     var title: String
     var isComplete : Bool
     var id : String
-    var assignedUsers : [String]
-  
+    var assignedUser : AppUser?
+    
     
     init(keyID : String, dictionary: [String: Any]) {
         self.title = dictionary["title"] as? String ?? ""
         self.isComplete = dictionary["isComplete"] as? Bool ?? false
         self.id = dictionary["id"] as? String ?? ""
-        self.assignedUsers = dictionary["assignedUsers"] as? [String] ?? []
+        if let assignedUserDict = dictionary["assignedUser"] as? [String: String] {
+            self.assignedUser = AppUser(name: assignedUserDict["name"] ?? "", email: assignedUserDict["email"] ?? "")
+        } else {
+            self.assignedUser = nil
+        }
         
     }
-    
 }
 
 struct AppUser {
@@ -38,29 +41,29 @@ struct AppUser {
     
 }
 
-
-
 struct PostService {
     
     static let shared = PostService()
     let db_reference = Database.database().reference()
     
-    func fetchAllItems(completion: @escaping([ChecklistItem]) -> Void) {
+    public func fetchAllItems(completion: @escaping([ChecklistItem]) -> Void) {
         
         var allItems = [ChecklistItem]()
         
         db_reference.child("items")
             .queryOrdered(byChild: "isComplete")
             .observe(.childAdded) { (snapshot) in
-            fetchSingleitem(id: snapshot.key) {(item) in
-                allItems.append(item)
-                completion(allItems)
-                
+ 
+                fetchSingleitem(id: snapshot.key) {(item) in
+                    allItems.append(item)
+                    completion(allItems)
+                        }
             }
-        }
-    }
+}
     
-    func fetchSingleitem(id : String, completion : @escaping(ChecklistItem) -> Void) {
+    
+    
+    public func fetchSingleitem(id : String, completion : @escaping(ChecklistItem) -> Void) {
         db_reference.child("items").child(id).observeSingleEvent(of:.value) {
             (snapshot) in
             guard let dictionary = snapshot.value as? [String : Any] else {return}
@@ -68,9 +71,13 @@ struct PostService {
             completion(checklistItem)
         }
     }
-    func uploadChecklistItem(text : String, completion : @escaping(Error?, DatabaseReference) -> Void) {
-        let values = ["title" : text ,
+    public func uploadChecklistItem(text : String,assignedUser : AppUser?, completion : @escaping(Error?, DatabaseReference) -> Void) {
+        
+        let userDict = ["name": assignedUser?.name, "email": assignedUser?.email]
+        let values : [String: Any] = [
+                      "title" : text ,
                       "isComplete" : false,
+                      "assignedUser": userDict
                      ] as [String : Any]
         
         let id = db_reference.child("items").childByAutoId()
@@ -111,7 +118,7 @@ struct PostService {
         })
     }
     
-    func fetchAllUsers(completion: @escaping ([AppUser]) -> Void) {
+   public func fetchAllUsers(completion: @escaping ([AppUser]) -> Void) {
         db_reference.child("users").observeSingleEvent(of: .value) { snapshot in
                     guard let usersDictionary = snapshot.value as? [String: [String: Any]] else {
                         completion([])
@@ -132,7 +139,15 @@ struct PostService {
                 }
             }
         
+    public func updateAssignedUser(checklistID : String, appUser : AppUser, completion : @escaping(Error?, DatabaseReference) -> Void) {
+        
+        let value = ["assignedUser": appUser]
+        db_reference.child("items").child(checklistID).updateChildValues(value,withCompletionBlock: completion)
+        
+        
+    }
     
 
     
 }
+
