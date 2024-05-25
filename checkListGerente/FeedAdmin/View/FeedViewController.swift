@@ -35,7 +35,9 @@ class FeedViewController: UIViewController {
         homeFeedTable.separatorColor = .systemGreen
         homeFeedTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        homeFeedTable.addSubview(refreshControl)
         fetchItems()
+      
         
  }
     
@@ -46,6 +48,11 @@ class FeedViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
         
     }
+    @objc private func handleChecklistItemUpdate() {
+        fetchItems()
+    }
+   
+    
     @objc func addItem(_ sender : UIButton) {
         viewModel?.goToAddChecklist()
     }
@@ -97,13 +104,21 @@ extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // im
     
     
 //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//       
-//        self.fetchItems()
-//        
-//
-//        
-//        
-//    }
+//            let checklistItem = checklistItems[indexPath.row]
+//            let newStatus = !checklistItem.isComplete
+//            
+//            PostService.shared.updateChecklistItemCompletionStatus(checklistID: checklistItem.id, isComplete: newStatus) { error, ref in
+//                if error == nil {
+//                    self.checklistItems[indexPath.row].isComplete = newStatus
+//                    DispatchQueue.main.async {
+//                        self.homeFeedTable.reloadRows(at: [indexPath], with: .automatic)
+//                        
+//                    }
+//                } else {
+//                    print("Erro ao atualizar status: \(error?.localizedDescription ?? "Unknown error")")
+//                }
+//            }
+//        }
 
    
     
@@ -117,3 +132,5 @@ extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // im
     }
     
 }
+
+

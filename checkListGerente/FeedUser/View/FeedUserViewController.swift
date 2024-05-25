@@ -9,66 +9,70 @@ import UIKit
 import FirebaseAuth
 
 class FeedUserViewController: UIViewController {
+    
+    var viewModel : FeedUserViewModel?
+    var checklistItems = [ChecklistItem]() {
+        didSet{
+            // filterChecklistItems()
+            print("todo items was set")
+            homeFeedUserTable.reloadData()
+        }
+    }
+    private let refreshControl = UIRefreshControl()
+    
+    
+    private let homeFeedUserTable : UITableView = { // criação da tabela
+        let tv = UITableView(frame: .zero, style: .grouped)
+        tv.backgroundColor = UIColor.systemBackground
+        tv.register(FeedUserTableViewCell.self, forCellReuseIdentifier: FeedUserTableViewCell.identifier) // registrou a classe que vai ter dentro das celulas , UItableviewcell
+        return tv
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewModel = FeedUserViewModel()
+        viewModel?.coordinator = FeedUserCoordinator(navigationController: navigationController!)
+        view.backgroundColor = .systemBackground
+        view.addSubview(homeFeedUserTable)
+        homeFeedUserTable.dataSource = self
+        homeFeedUserTable.delegate = self
+        homeFeedUserTable.separatorColor = .systemGreen
+        homeFeedUserTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        homeFeedUserTable.addSubview(refreshControl)
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        fetchItems()
+      
+    }
+    
+    
+    
+    public func fetchItems() {
+        guard let currentUser = Auth.auth().currentUser else { return }
+        let user = AppUser(name: currentUser.displayName ?? "", email: currentUser.email ?? "")
         
-        var viewModel : FeedUserViewModel?
-        var checklistItems = [ChecklistItem]() {
-            didSet{
-               // filterChecklistItems()
-                print("todo items was set")
-                homeFeedUserTable.reloadData()
+        PostService.shared.fetchAllItems(for: user) { allItems in
+            DispatchQueue.main.async {
+                self.checklistItems = allItems
+                self.homeFeedUserTable.reloadData()
+                self.refreshControl.endRefreshing()
             }
         }
-    private let refreshControl = UIRefreshControl()
-       
-      
-        private let homeFeedUserTable : UITableView = { // criação da tabela
-            let tv = UITableView(frame: .zero, style: .grouped)
-            tv.backgroundColor = UIColor.systemBackground
-            tv.register(FeedUserTableViewCell.self, forCellReuseIdentifier: FeedUserTableViewCell.identifier) // registrou a classe que vai ter dentro das celulas , UItableviewcell
-            return tv
-        }()
-        
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            viewModel = FeedUserViewModel()
-            viewModel?.coordinator = FeedUserCoordinator(navigationController: navigationController!)
-            view.backgroundColor = .systemBackground
-            view.addSubview(homeFeedUserTable)
-            homeFeedUserTable.dataSource = self
-            homeFeedUserTable.delegate = self
-            homeFeedUserTable.separatorColor = .systemGreen
-            homeFeedUserTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-            refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
-            fetchItems()
-            
-     }
-        
-    
-        public func fetchItems() {
-            guard let currentUser = Auth.auth().currentUser else { return }
-                  let user = AppUser(name: currentUser.displayName ?? "", email: currentUser.email ?? "")
-            
-            PostService.shared.fetchAllItems(for: user) { allItems in
-                    DispatchQueue.main.async {
-                        self.checklistItems = allItems
-                        self.homeFeedUserTable.reloadData()
-                        self.refreshControl.endRefreshing()
-                    }
-                }
-        }
-    
-
-        override func viewDidLayoutSubviews() {
-            super.viewDidLayoutSubviews()
-            homeFeedUserTable.frame = view.bounds // tableView na tela toda
-        }
-        
-    @objc private func refreshData() {
-            fetchItems()
-        }
-
-
     }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        homeFeedUserTable.frame = view.bounds // tableView na tela toda
+    }
+    
+    @objc private func refreshData() {
+        fetchItems()
+    }
+    
+    
+    
+    
+}
     extension FeedUserViewController : UITableViewDataSource, UITableViewDelegate{ // implementando o protocolo e suas funçoes obrigatorias
         // numero de sessões
         func numberOfSections(in tableView: UITableView) -> Int {
@@ -89,14 +93,21 @@ class FeedUserViewController: UIViewController {
         }
         
         
-//        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//           
-//            self.fetchItems()
-//            
-//
-//            
-//            
-//        }
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+                let checklistItem = checklistItems[indexPath.row]
+                let newStatus = !checklistItem.isComplete
+                
+                PostService.shared.updateChecklistItemCompletionStatus(checklistID: checklistItem.id, isComplete: newStatus) { error, ref in
+                    if error == nil {
+                        self.checklistItems[indexPath.row].isComplete = newStatus
+                        DispatchQueue.main.async {
+                            self.homeFeedUserTable.reloadRows(at: [indexPath], with: .automatic)
+                        }
+                    } else {
+                        print("Erro ao atualizar status: \(error?.localizedDescription ?? "Unknown error")")
+                    }
+                }
+            }
 
        
         
@@ -110,6 +121,7 @@ class FeedUserViewController: UIViewController {
         }
         
     }
+
 
 
     

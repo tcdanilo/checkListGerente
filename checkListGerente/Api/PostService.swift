@@ -94,6 +94,11 @@ struct PostService {
         }
     }
     
+    public func updateChecklistItemCompletionStatus(checklistID: String, isComplete: Bool, completion: @escaping (Error?, DatabaseReference) -> Void) {
+        let value = ["isComplete": isComplete]
+        db_reference.child("items").child(checklistID).updateChildValues(value, withCompletionBlock: completion)
+    }
+    
     
     public func uploadChecklistItem(text : String,assignedUser : AppUser?, completion : @escaping(Error?, DatabaseReference) -> Void) {
         
