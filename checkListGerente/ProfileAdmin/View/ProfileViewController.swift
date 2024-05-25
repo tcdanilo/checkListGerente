@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseStorage
+import Firebase
 
 class ProfileViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
 
@@ -31,7 +34,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     
     let usuario : UILabel = {
         let ed = UILabel()
-        ed.text = "Adelson pires"
+        ed.text = ""
         ed.font = UIFont.systemFont(ofSize: 30)
         ed.textColor = .label
         ed.translatesAutoresizingMaskIntoConstraints = false
@@ -57,6 +60,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         view.addSubview(addImageButton)
         view.addSubview(usuario)
         view.addSubview(changePassword)
+        fetchUserName()
+        fetchUserProfile()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sair", style: .done, target: self, action: #selector(logoffTapped))
         navigationItem.rightBarButtonItem?.tintColor = .red
         
@@ -89,20 +94,49 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         NSLayoutConstraint.activate(usuarioConstraints)
       
     }
-  
+    
+    func fetchUserName() {
+            PostService.shared.fetchUserName { [weak self] name in
+                guard let self = self else { return }
+                self.usuario.text = name ?? "Nome não encontrado"
+            }
+        }
+    
+    func fetchUserProfile() {
+            PostService.shared.fetchUserProfile { [weak self] user, profileImageURL in
+                guard let self = self else { return }
+                
+                if let user = user {
+                    self.usuario.text = user.name
+                }
+                
+                if let profileImageURL = profileImageURL {
+                    PostService.shared.loadProfileImage(from: profileImageURL) { image in
+                        if let image = image {
+                            self.img.image = image
+                        }
+                    }
+                }
+            }
+        }
+    
+    @objc func logoffTapped(){
+        
+    }
+
     
     
     @objc func addImageTapped() {
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self
             let alertController = UIAlertController(title: "Adicionar Foto", message: nil, preferredStyle: .actionSheet)
-            
+
             let choosePhotoAction = UIAlertAction(title: "Escolher Foto", style: .default) { _ in
                 imagePicker.sourceType = .photoLibrary
                 self.present(imagePicker, animated: true, completion: nil)
             }
             alertController.addAction(choosePhotoAction)
-            
+
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
                 let takePhotoAction = UIAlertAction(title: "Tirar Foto", style: .default) { _ in
                     imagePicker.sourceType = .camera
@@ -110,30 +144,67 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                 }
                 alertController.addAction(takePhotoAction)
             }
-            
+
             let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
-            
+
             present(alertController, animated: true, completion: nil)
         }
-    
-    @objc func logoffTapped() {
-        
-    }
-    
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-             
                 img.image = pickedImage
+                uploadProfileImage(pickedImage) { url in
+                    if let url = url {
+                        self.saveProfileImageURL(url.absoluteString)
+                    } else {
+                        // Handle error
+                    }
+                }
             }
             picker.dismiss(animated: true, completion: nil)
         }
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             picker.dismiss(animated: true, completion: nil)
         }
-    
 
-  
+        func uploadProfileImage(_ image: UIImage, completion: @escaping (_ url: URL?) -> Void) {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            let storageRef = Storage.storage().reference().child("profile_images").child("\(uid).jpg")
+            guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
 
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/jpeg"
+
+            storageRef.putData(imageData, metadata: metadata) { (metadata, error) in
+                if error != nil {
+                    print("Failed to upload image: \(error!.localizedDescription)")
+                    completion(nil)
+                    return
+                }
+
+                storageRef.downloadURL { (url, error) in
+                    if error != nil {
+                        print("Failed to download url: \(error!.localizedDescription)")
+                        completion(nil)
+                        return
+                    }
+                    completion(url)
+                }
+            }
+        }
+
+        func saveProfileImageURL(_ url: String) {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            let databaseRef = Database.database().reference().child("users").child(uid)
+
+            databaseRef.updateChildValues(["profileImageURL": url]) { (error, ref) in
+                if let error = error {
+                    print("Failed to save profile image url: \(error.localizedDescription)")
+                    return
+                }
+                print("Successfully saved profile image url")
+            }
+        }
 }

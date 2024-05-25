@@ -201,6 +201,7 @@ class AddCheckViewController: UIViewController {
                         navController.popToViewController(feedVC, animated: true)
                         break
                     }
+                    
                 }
             } else {
                 self.dismiss(animated: true, completion: nil)

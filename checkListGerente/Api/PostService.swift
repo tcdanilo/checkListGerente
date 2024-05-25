@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
+import FirebaseStorage
 
 struct ChecklistItem {
     var title: String
@@ -45,8 +47,12 @@ struct PostService {
     
     static let shared = PostService()
     let db_reference = Database.database().reference()
+    let storage_reference = Storage.storage().reference()
     
-    public func fetchAllItems(completion: @escaping([ChecklistItem]) -> Void) {
+    
+    
+    
+    public func fetchAllItemsAdmin(completion: @escaping([ChecklistItem]) -> Void) {
         
         var allItems = [ChecklistItem]()
         
@@ -60,6 +66,22 @@ struct PostService {
                         }
             }
 }
+    public func fetchAllItems(for user: AppUser, completion: @escaping ([ChecklistItem]) -> Void) {
+            var allItems = [ChecklistItem]()
+        let userEmail = user.email
+            print("Fetching items for user: \(userEmail)")
+            
+            db_reference.child("items")
+                .queryOrdered(byChild: "assignedUser/email")
+                .queryEqual(toValue: userEmail)
+                .observe(.childAdded) { (snapshot) in
+                    self.fetchSingleitem(id: snapshot.key) { item in
+                        print("Fetched item: \(item.title)")
+                        allItems.append(item)
+                        completion(allItems)
+                    }
+                }
+        }
     
     
     
@@ -71,6 +93,8 @@ struct PostService {
             completion(checklistItem)
         }
     }
+    
+    
     public func uploadChecklistItem(text : String,assignedUser : AppUser?, completion : @escaping(Error?, DatabaseReference) -> Void) {
         
         let userDict = ["name": assignedUser?.name, "email": assignedUser?.email]
@@ -146,6 +170,68 @@ struct PostService {
         
         
     }
+    public func fetchUserName(completion: @escaping (String?) -> Void) {
+            guard let user = Auth.auth().currentUser else {
+                completion(nil)
+                return
+            }
+            let userEmail = user.email ?? ""
+            let safeEmail = userEmail.replacingOccurrences(of: ".", with: "-").replacingOccurrences(of: "@", with: "-")
+            
+            let ref = db_reference.child("users").child(safeEmail)
+            ref.observeSingleEvent(of: .value) { snapshot, _ in
+                guard let value = snapshot.value as? [String: Any],
+                      let name = value["first_name"] as? String else {
+                    completion(nil)
+                    return
+                }
+                completion(name)
+            }
+        }
+    
+    func fetchUserProfile(completion: @escaping (AppUser?, String?) -> Void) {
+            guard let uid = Auth.auth().currentUser?.uid else {
+                completion(nil, nil)
+                return
+            }
+
+            let userRef = db_reference.child("users").child(uid)
+
+            userRef.observeSingleEvent(of: .value) { snapshot in
+                guard let userData = snapshot.value as? [String: Any] else {
+                    completion(nil, nil)
+                    return
+                }
+
+                let name = userData["first_name"] as? String ?? ""
+                let email = userData["email"] as? String ?? ""
+                let profileImageURL = userData["profileImageURL"] as? String
+
+                let user = AppUser(name: name, email: email)
+                completion(user, profileImageURL)
+            }
+        }
+        
+        // Método para carregar a imagem do perfil
+    func loadProfileImage(from url: String, completion: @escaping (UIImage?) -> Void) {
+            guard let imageURL = URL(string: url) else {
+                completion(nil)
+                return
+            }
+
+            DispatchQueue.global().async {
+                if let imageData = try? Data(contentsOf: imageURL) {
+                    let image = UIImage(data: imageData)
+                    DispatchQueue.main.async {
+                        completion(image)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
+                }
+            }
+        }
     
 
     

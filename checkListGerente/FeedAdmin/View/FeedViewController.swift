@@ -7,13 +7,13 @@ import Firebase
 class FeedViewController: UIViewController {
     
     var viewModel : FeedViewModel?
-    var currentUser: AppUser?
     var checklistItems = [ChecklistItem]() {
         didSet{
             print("todo items was set")
             homeFeedTable.reloadData()
         }
     }
+    private let refreshControl = UIRefreshControl()
    
   
     private let homeFeedTable : UITableView = { // criação da tabela
@@ -34,6 +34,7 @@ class FeedViewController: UIViewController {
         homeFeedTable.delegate = self
         homeFeedTable.separatorColor = .systemGreen
         homeFeedTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         fetchItems()
         
  }
@@ -48,12 +49,16 @@ class FeedViewController: UIViewController {
     @objc func addItem(_ sender : UIButton) {
         viewModel?.goToAddChecklist()
     }
+    @objc private func refreshData() {
+            fetchItems()
+        }
     
     public func fetchItems() {
-        PostService.shared.fetchAllItems() { allItems in
+        PostService.shared.fetchAllItemsAdmin() { allItems in
                 DispatchQueue.main.async {
                     self.checklistItems = allItems
                     self.homeFeedTable.reloadData()
+                    self.refreshControl.endRefreshing()
                 }
             }
     }
@@ -91,14 +96,14 @@ extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // im
     }
     
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-       
-        self.fetchItems()
-        
-
-        
-        
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//       
+//        self.fetchItems()
+//        
+//
+//        
+//        
+//    }
 
    
     

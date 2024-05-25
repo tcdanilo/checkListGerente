@@ -18,7 +18,7 @@ class FeedUserViewController: UIViewController {
                 homeFeedUserTable.reloadData()
             }
         }
-   
+    private let refreshControl = UIRefreshControl()
        
       
         private let homeFeedUserTable : UITableView = { // criação da tabela
@@ -38,29 +38,34 @@ class FeedUserViewController: UIViewController {
             homeFeedUserTable.delegate = self
             homeFeedUserTable.separatorColor = .systemGreen
             homeFeedUserTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
             fetchItems()
             
      }
         
     
         public func fetchItems() {
-            PostService.shared.fetchAllItems { allItems in
+            guard let currentUser = Auth.auth().currentUser else { return }
+                  let user = AppUser(name: currentUser.displayName ?? "", email: currentUser.email ?? "")
+            
+            PostService.shared.fetchAllItems(for: user) { allItems in
                     DispatchQueue.main.async {
                         self.checklistItems = allItems
                         self.homeFeedUserTable.reloadData()
+                        self.refreshControl.endRefreshing()
                     }
                 }
         }
-        
-        
-        
-     
+    
+
         override func viewDidLayoutSubviews() {
             super.viewDidLayoutSubviews()
             homeFeedUserTable.frame = view.bounds // tableView na tela toda
         }
         
-       
+    @objc private func refreshData() {
+            fetchItems()
+        }
 
 
     }
@@ -84,14 +89,14 @@ class FeedUserViewController: UIViewController {
         }
         
         
-        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-           
-            self.fetchItems()
-            
-
-            
-            
-        }
+//        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//           
+//            self.fetchItems()
+//            
+//
+//            
+//            
+//        }
 
        
         

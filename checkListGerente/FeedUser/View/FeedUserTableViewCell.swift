@@ -8,7 +8,7 @@
 import UIKit
 
 class FeedUserTableViewCell: UITableViewCell {
-    static let identifier = "FeedTableViewCell"
+    static let identifier = "FeedUserTableViewCell"
     
     var checklistItem : ChecklistItem? {
         didSet {
