@@ -47,6 +47,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         ed.translatesAutoresizingMaskIntoConstraints = false
         ed.tintColor = .systemRed
         ed.setTitle("Alterar senha", for: .normal)
+        ed.addTarget(self, action: #selector(changePasswordDidTap), for: .touchUpInside)
+
         return ed
         
     }()
@@ -64,6 +66,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
         fetchUserProfile()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Sair", style: .done, target: self, action: #selector(logoffTapped))
         navigationItem.rightBarButtonItem?.tintColor = .red
+        
         
         
         let imgConstraints = [
@@ -119,9 +122,50 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
                 }
             }
         }
+    func showError(message: String) {
+        let alert = UIAlertController(title: "Erro", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
     
     @objc func logoffTapped(){
-        
+        do {
+                try Auth.auth().signOut()
+                // Remover todos os view controllers da pilha de navegação
+                if let window = UIApplication.shared.windows.first {
+                    let signInVC = SignInViewController()
+                    let navController = UINavigationController(rootViewController: signInVC)
+                    navController.modalPresentationStyle = .fullScreen
+                    window.rootViewController = navController
+                    window.makeKeyAndVisible()
+                }
+            } catch let signOutError as NSError {
+                print("Error signing out: %@", signOutError)
+                let alert = UIAlertController(title: "Erro", message: "Falha ao sair: \(signOutError.localizedDescription)", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                present(alert, animated: true, completion: nil)
+            }
+    }
+    @objc func changePasswordDidTap() {
+        guard let currentUser = Auth.auth().currentUser else {
+            showError(message: "Não há usuário logado.")
+            return
+        }
+
+        let email = currentUser.email ?? ""
+        Auth.auth().sendPasswordReset(withEmail: email) { [weak self] error in
+            guard let self = self else { return }
+
+            if let error = error {
+                print("Erro ao enviar e-mail de redefinição de senha:", error.localizedDescription)
+                self.showError(message: "Erro ao enviar e-mail de redefinição de senha.")
+            } else {
+                print("E-mail de redefinição de senha enviado com sucesso.")
+                let alert = UIAlertController(title: "Sucesso", message: "Um e-mail de redefinição de senha foi enviado para \(email).", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
 
     

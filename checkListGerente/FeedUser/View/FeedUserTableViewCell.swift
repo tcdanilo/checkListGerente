@@ -13,11 +13,6 @@ class FeedUserTableViewCell: UITableViewCell {
     var checklistItem : ChecklistItem? {
         didSet {
             titleLabel.text = checklistItem?.title
-            if let assignedUser = checklistItem?.assignedUser {
-                            assignedUserLabel.text = assignedUser.name
-                        } else {
-                            assignedUserLabel.text = "Nenhum usuário atribuído"
-                        }
             if let isComplete = checklistItem?.isComplete, isComplete{
                 isCompleteLabel.text = "Realizado"
                 isCompleteLabel.textColor = .green
@@ -44,22 +39,7 @@ class FeedUserTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let assignedLabel : UILabel = {
-        let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 12)
-        label.textColor = .label
-        label.text = "Usuarios atribuidos:"
-        return label
-        
-    }()
-    
-    private let assignedUserLabel : UILabel = {
-        let label = UILabel()
-        label.font = .boldSystemFont(ofSize: 10)
-        label.textColor = .label
-        label.text = "Usuarios atribuidos"
-        return label
-    }()
+   
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -67,12 +47,10 @@ class FeedUserTableViewCell: UITableViewCell {
         backgroundColor = .systemOrange
         addSubview(titleLabel)
         addSubview(isCompleteLabel)
-        addSubview(assignedLabel)
-        addSubview(assignedUserLabel)
+        
         titleLabel.anchor(top: topAnchor,left: leftAnchor, paddingTop: 4,paddingLeft: 8)
         isCompleteLabel.anchor(top: titleLabel.bottomAnchor, left: leftAnchor, paddingTop: 4, paddingLeft: 8)
-        assignedLabel.anchor(top: topAnchor,right: rightAnchor,paddingTop: 4,paddingRight: 8)
-        assignedUserLabel.anchor(top: topAnchor,right: rightAnchor, paddingTop: 20,paddingRight: 8)
+        
       
     }
     
