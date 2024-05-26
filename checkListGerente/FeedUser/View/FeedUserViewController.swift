@@ -94,20 +94,24 @@ class FeedUserViewController: UIViewController {
         
         
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-                let checklistItem = checklistItems[indexPath.row]
-                let newStatus = !checklistItem.isComplete
-                
-                PostService.shared.updateChecklistItemCompletionStatus(checklistID: checklistItem.id, isComplete: newStatus) { error, ref in
-                    if error == nil {
-                        self.checklistItems[indexPath.row].isComplete = newStatus
-                        DispatchQueue.main.async {
-                            self.homeFeedUserTable.reloadRows(at: [indexPath], with: .automatic)
-                        }
-                    } else {
-                        print("Erro ao atualizar status: \(error?.localizedDescription ?? "Unknown error")")
+            let checklistItem = checklistItems[indexPath.row]
+            let newStatus = !checklistItem.isComplete
+            
+            PostService.shared.updateChecklistItemCompletionStatus(checklistID: checklistItem.id, isComplete: newStatus) { error, ref in
+                if error == nil {
+                    // Atualiza o status do item no array de dados
+                    self.checklistItems[indexPath.row].isComplete = newStatus
+                    
+                    DispatchQueue.main.async {
+                        // Recarrega apenas a última linha da tabela
+                        let lastIndexPath = IndexPath(row: self.checklistItems.count - 1, section: 0)
+                        self.homeFeedUserTable.reloadRows(at: [lastIndexPath], with: .automatic)
                     }
+                } else {
+                    print("Erro ao atualizar status: \(error?.localizedDescription ?? "Unknown error")")
                 }
             }
+        }
 
        
         

@@ -95,8 +95,21 @@ struct PostService {
     }
     
     public func updateChecklistItemCompletionStatus(checklistID: String, isComplete: Bool, completion: @escaping (Error?, DatabaseReference) -> Void) {
-        let value = ["isComplete": isComplete]
-        db_reference.child("items").child(checklistID).updateChildValues(value, withCompletionBlock: completion)
+        // Verifica se o checklistID não está vazio e não contém caracteres especiais
+            guard !checklistID.isEmpty else {
+                completion(NSError(domain: "Firebase", code: -1, userInfo: [NSLocalizedDescriptionKey: "Checklist ID is empty"]), db_reference)
+                return
+            }
+            
+            // Verifica se o checklistID contém caracteres especiais
+            let invalidCharacters = CharacterSet(charactersIn: ".#$/[]")
+            guard checklistID.rangeOfCharacter(from: invalidCharacters) == nil else {
+                completion(NSError(domain: "Firebase", code: -1, userInfo: [NSLocalizedDescriptionKey: "Checklist ID contains invalid characters"]), db_reference)
+                return
+            }
+            
+            let value = ["isComplete": isComplete]
+            db_reference.child("items").child(checklistID).updateChildValues(value, withCompletionBlock: completion)
     }
     
     
@@ -124,7 +137,7 @@ struct PostService {
 
    
     // inserir novo usuario no database
-    public func insertUser(with user: AppUser) {
+    public func insertUser(with user: AppUser, uid: String) {
         db_reference.child("users").child(user.safeEmail).setValue([
             "first_name": user.name,
             "email" : user.email

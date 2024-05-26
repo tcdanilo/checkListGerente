@@ -73,7 +73,7 @@ class SignUpViewController : UIViewController{
         ps.placeholder = "Digite sua senha"
         ps.autocapitalizationType = .none
         ps.isSecureTextEntry = true
-        
+        ps.textContentType = .none
         ps.tag = 3
         ps.returnKeyType = .done
         ps.translatesAutoresizingMaskIntoConstraints = false
@@ -256,12 +256,19 @@ class SignUpViewController : UIViewController{
        
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             
-            guard authResult != nil , error == nil else {
-                print("error creating user")
-                return
-            }
-            
-            PostService.shared.insertUser(with: AppUser(name: name, email: email))
+            if let error = error {
+                    print("Erro ao criar usuário: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let authResult = authResult else {
+                    print("Erro desconhecido ao criar usuário.")
+                    return
+                }
+                
+                let user = authResult.user
+            let appUser = AppUser(name: name, email: email)
+                PostService.shared.insertUser(with: appUser, uid: user.uid)
             
             let SignInVC = SignInViewController()
             strongSelf.navigationController?.pushViewController(SignInVC, animated: true)
