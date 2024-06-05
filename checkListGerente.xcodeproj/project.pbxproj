@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9F0B47BD2BF4F96A009D1CEA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9F0B47BC2BF4F96A009D1CEA /* GoogleService-Info.plist */; };
 		9F1B05212BD94F1700C3C264 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B05202BD94F1700C3C264 /* ReportViewController.swift */; };
 		9F650A862BB5B5DD0083C792 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F650A852BB5B5DD0083C792 /* FeedTableViewCell.swift */; };
 		9F65DFF22BD996D5002F24A3 /* FeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65DFF12BD996D5002F24A3 /* FeedCoordinator.swift */; };
@@ -42,6 +41,7 @@
 		9FA8B5A32BF5008300E48331 /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9FA8B5A22BF5008300E48331 /* FirebaseRemoteConfigSwift */; };
 		9FA8B5A52BF5008300E48331 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 9FA8B5A42BF5008300E48331 /* FirebaseStorage */; };
 		9FA8B5A72BF5008300E48331 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 9FA8B5A62BF5008300E48331 /* FirebaseStorageCombine-Community */; };
+		9FD60D682C1094F600FABF2E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9FD60D672C1094F600FABF2E /* GoogleService-Info.plist */; };
 		9FEC77B92BF4E1BD00523BCC /* HomeUserCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77B82BF4E1BD00523BCC /* HomeUserCoordinator.swift */; };
 		9FEC77BB2BF4E1CA00523BCC /* HomeUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77BA2BF4E1CA00523BCC /* HomeUserViewController.swift */; };
 		9FEC77BD2BF4E1D600523BCC /* HomeUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77BC2BF4E1D600523BCC /* HomeUserViewModel.swift */; };
@@ -58,14 +58,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9F0B47BC2BF4F96A009D1CEA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9F1B05202BD94F1700C3C264 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		9F650A852BB5B5DD0083C792 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
 		9F65DFF12BD996D5002F24A3 /* FeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCoordinator.swift; sourceTree = "<group>"; };
 		9F65DFF42BD99924002F24A3 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
 		9F6CE0772BFB8C700093A2B1 /* Extension+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+UIView.swift"; sourceTree = "<group>"; };
 		9F6CE07A2BFB93B70093A2B1 /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
-		9F88E62B2BB352A000EB8315 /* checkListGerente.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = checkListGerente.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F88E62E2BB352A000EB8315 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9F88E6302BB352A000EB8315 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		9F88E6372BB352A200EB8315 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -83,6 +81,8 @@
 		9F88E6602BB4C04E00EB8315 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		9F88E6642BB4C71300EB8315 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		9F88E6662BB4C72600EB8315 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		9FCA03362C10B0C500DEE5C0 /* checkListGerente.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = checkListGerente.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9FD60D672C1094F600FABF2E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9FEC77B82BF4E1BD00523BCC /* HomeUserCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserCoordinator.swift; sourceTree = "<group>"; };
 		9FEC77BA2BF4E1CA00523BCC /* HomeUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserViewController.swift; sourceTree = "<group>"; };
 		9FEC77BC2BF4E1D600523BCC /* HomeUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserViewModel.swift; sourceTree = "<group>"; };
@@ -173,16 +173,8 @@
 			isa = PBXGroup;
 			children = (
 				9F88E62D2BB352A000EB8315 /* checkListGerente */,
-				9F88E62C2BB352A000EB8315 /* Products */,
+				9FCA03362C10B0C500DEE5C0 /* checkListGerente.app */,
 			);
-			sourceTree = "<group>";
-		};
-		9F88E62C2BB352A000EB8315 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				9F88E62B2BB352A000EB8315 /* checkListGerente.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		9F88E62D2BB352A000EB8315 /* checkListGerente */ = {
@@ -206,7 +198,7 @@
 				9F88E6372BB352A200EB8315 /* Assets.xcassets */,
 				9F88E6392BB352A200EB8315 /* LaunchScreen.storyboard */,
 				9F88E63C2BB352A200EB8315 /* Info.plist */,
-				9F0B47BC2BF4F96A009D1CEA /* GoogleService-Info.plist */,
+				9FD60D672C1094F600FABF2E /* GoogleService-Info.plist */,
 			);
 			path = checkListGerente;
 			sourceTree = "<group>";
@@ -476,7 +468,7 @@
 				9FA8B5A62BF5008300E48331 /* FirebaseStorageCombine-Community */,
 			);
 			productName = checkListGerente;
-			productReference = 9F88E62B2BB352A000EB8315 /* checkListGerente.app */;
+			productReference = 9FCA03362C10B0C500DEE5C0 /* checkListGerente.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -506,7 +498,7 @@
 			packageReferences = (
 				9FEC77D42BF4F19000523BCC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
-			productRefGroup = 9F88E62C2BB352A000EB8315 /* Products */;
+			productRefGroup = 9F88E6222BB352A000EB8315;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -522,7 +514,7 @@
 			files = (
 				9F88E6382BB352A200EB8315 /* Assets.xcassets in Resources */,
 				9F88E63B2BB352A200EB8315 /* Base in Resources */,
-				9F0B47BD2BF4F96A009D1CEA /* GoogleService-Info.plist in Resources */,
+				9FD60D682C1094F600FABF2E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -716,6 +708,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -743,6 +736,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

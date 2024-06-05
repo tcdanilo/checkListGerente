@@ -12,134 +12,78 @@ import UIKit
 class AddCheckViewController: UIViewController {
     
     
-    var viewModel : AddChecklistViewModel?
-    var users : [AppUser] = []
-    
-    
-    let scroll: UIScrollView = {
-        let sc = UIScrollView()
-        sc.translatesAutoresizingMaskIntoConstraints = false
-        
-        return sc
-    }()
-    
-    let container : UIView = {
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .systemBackground
-        return v
-    }()
-    
-    
-    lazy var titleChecklist : UITextField = {
-        let ed = UITextField()
-        ed.borderStyle = .roundedRect
-        ed.placeholder = "Digite o título"
-        ed.delegate = self
-        ed.tag = 1
-        ed.returnKeyType = .next
-        ed.translatesAutoresizingMaskIntoConstraints = false
-        return ed
-    }()
-    
-    
-    let userPicker: UIPickerView = {
-        let picker = UIPickerView()
-        picker.translatesAutoresizingMaskIntoConstraints = false
-        return picker
-    }()
-    
-    
-    lazy var addButton : UIButton = {
-        let r = UIButton()
-        r.setTitle("Criar Checklist", for: .normal)
-        r.backgroundColor = .systemOrange
-        r.translatesAutoresizingMaskIntoConstraints = false
-        r.addTarget(self, action: #selector(addTextField), for: .touchUpInside)
-        return r
-    }()
-    
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        navigationItem.title = "Novo checklist"
-        view.backgroundColor = .systemBackground
-        
-        view.addSubview(scroll)
-        scroll.addSubview(container)
-        container.addSubview(titleChecklist)
-        container.addSubview(addButton)
-        container.addSubview(userPicker)
-        userPicker.dataSource = self
-        userPicker.delegate = self
-        fetchUsers()
-        
-        
-        
-        
-        
-        
-        let scrollConstraints = [
-            scroll.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scroll.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scroll.topAnchor.constraint(equalTo: view.topAnchor),
-            scroll.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ]
-        let containerConstraints = [
-            container.widthAnchor.constraint(equalTo: view.widthAnchor),
-            container.topAnchor.constraint(equalTo: scroll.topAnchor),
-            container.leadingAnchor.constraint(equalTo: scroll.leadingAnchor),
-            container.trailingAnchor.constraint(equalTo: scroll.trailingAnchor),
-            container.bottomAnchor.constraint(equalTo: scroll.bottomAnchor),
-            container.heightAnchor.constraint(equalToConstant: 490.0)
-        ]
-        
-        let heigthConstraints = container.heightAnchor.constraint(equalTo: view.heightAnchor)
-        heigthConstraints.priority = .defaultLow
-        heigthConstraints.isActive = true
-        
-        
-        
-        let titleChecklistConstraints = [
-            titleChecklist.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            titleChecklist.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            titleChecklist.topAnchor.constraint(equalTo: container.bottomAnchor,constant: -450),
-            titleChecklist.heightAnchor.constraint(equalToConstant: 50.0)
-        ]
-        
-        
-        let userPickerConstraints = [
-            userPicker.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 50.0),
-            userPicker.trailingAnchor.constraint(equalTo:container.trailingAnchor, constant: -50.0),
-            userPicker.topAnchor.constraint(equalTo: titleChecklist.bottomAnchor, constant: 15.0),
-            userPicker.heightAnchor.constraint(equalToConstant: 50.0)
-            
-        ]
-        
-        
-        
-        let addButtonConstraints = [
-            addButton.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            addButton.trailingAnchor.constraint(equalTo:container.trailingAnchor),
-            addButton.topAnchor.constraint(equalTo: userPicker.bottomAnchor, constant: 20.0),
-            addButton.heightAnchor.constraint(equalToConstant: 50.0)
-        ]
-        
-        
-        
-        NSLayoutConstraint.activate(titleChecklistConstraints)
-        NSLayoutConstraint.activate(userPickerConstraints)
-        NSLayoutConstraint.activate(addButtonConstraints)
-        NSLayoutConstraint.activate(scrollConstraints)
-        NSLayoutConstraint.activate(containerConstraints)
-        
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
-    }
+    var viewModel: AddChecklistViewModel?
+        var users: [AppUser] = []
+
+        let scroll: UIScrollView = {
+            let sc = UIScrollView()
+            sc.translatesAutoresizingMaskIntoConstraints = false
+            return sc
+        }()
+
+        let container: UIStackView = {
+            let stackView = UIStackView()
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+            stackView.axis = .vertical
+            stackView.spacing = 20
+            return stackView
+        }()
+
+        let titleChecklist: UITextField = {
+            let ed = UITextField()
+            ed.borderStyle = .roundedRect
+            ed.placeholder = "Digite o título"
+            ed.translatesAutoresizingMaskIntoConstraints = false
+            return ed
+        }()
+
+        let userPicker: UIPickerView = {
+            let picker = UIPickerView()
+            picker.translatesAutoresizingMaskIntoConstraints = false
+            return picker
+        }()
+
+        let addButton: UIButton = {
+            let button = UIButton()
+            button.setTitle("Criar Checklist", for: .normal)
+            button.backgroundColor = .systemOrange
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.addTarget(self, action: #selector(addTextField), for: .touchUpInside)
+            return button
+        }()
+
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            navigationItem.title = "Novo checklist"
+            view.backgroundColor = .systemBackground
+
+            view.addSubview(scroll)
+            scroll.addSubview(container)
+            container.addArrangedSubview(titleChecklist)
+            container.addArrangedSubview(userPicker)
+            container.addArrangedSubview(addButton)
+            userPicker.dataSource = self
+            userPicker.delegate = self
+            fetchUsers()
+
+            NSLayoutConstraint.activate([
+                scroll.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                scroll.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                scroll.topAnchor.constraint(equalTo: view.topAnchor),
+                scroll.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                container.centerXAnchor.constraint(equalTo: scroll.centerXAnchor),
+                container.topAnchor.constraint(equalTo: scroll.bottomAnchor, constant: 40),
+                //container.centerYAnchor.constraint(equalTo: scroll.centerYAnchor),
+                container.leadingAnchor.constraint(equalTo: scroll.leadingAnchor, constant: 20),
+                container.trailingAnchor.constraint(equalTo: scroll.trailingAnchor, constant: -20),
+                titleChecklist.heightAnchor.constraint(equalToConstant: 50),
+                addButton.heightAnchor.constraint(equalToConstant: 50),
+                userPicker.heightAnchor.constraint(equalToConstant: 100)
+            ])
+
+            NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardNotification), name: UIResponder.keyboardWillShowNotification, object: nil)
+        }
     
     
     
@@ -191,6 +135,7 @@ class AddCheckViewController: UIViewController {
     @objc func addTextField() {
         guard let checklistText = titleChecklist.text else {return}
         guard let assignedUser = getSelectedUser() else {return}
+        //let selectedDate = datePicker.date
         
         PostService.shared.uploadChecklistItem(text: checklistText, assignedUser: assignedUser) { (err, ref) in
             self.titleChecklist.text = ""

@@ -4,6 +4,7 @@ import UIKit
 import Firebase
 
 
+
 class FeedViewController: UIViewController {
     
     var viewModel : FeedViewModel?
@@ -30,15 +31,17 @@ class FeedViewController: UIViewController {
         viewModel?.coordinator = FeedCoordinator(navigationController: navigationController!)
         view.backgroundColor = .systemBackground
         view.addSubview(homeFeedTable)
+   
         homeFeedTable.dataSource = self
         homeFeedTable.delegate = self
+
         homeFeedTable.separatorColor = .systemGreen
         homeFeedTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         homeFeedTable.addSubview(refreshControl)
         fetchItems()
       
-        
+       
  }
     
     
@@ -48,6 +51,9 @@ class FeedViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
         
     }
+    
+   
+    
     @objc private func handleChecklistItemUpdate() {
         fetchItems()
     }
@@ -60,9 +66,10 @@ class FeedViewController: UIViewController {
             fetchItems()
         }
     
-    public func fetchItems() {
+    public func fetchItems(for date: Date? = nil) {
         PostService.shared.fetchAllItemsAdmin() { allItems in
                 DispatchQueue.main.async {
+                    
                     self.checklistItems = allItems
                     self.homeFeedTable.reloadData()
                     self.refreshControl.endRefreshing()
@@ -83,6 +90,9 @@ class FeedViewController: UIViewController {
 
 
 }
+
+
+
 extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // implementando o protocolo e suas funçoes obrigatorias
     // numero de sessões
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -94,7 +104,7 @@ extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // im
     }
     //altura da linha
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
+        return 150
     }
     
     
@@ -132,5 +142,6 @@ extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // im
     }
     
 }
+
 
 

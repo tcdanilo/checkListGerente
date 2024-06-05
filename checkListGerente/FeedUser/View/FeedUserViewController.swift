@@ -84,7 +84,7 @@ class FeedUserViewController: UIViewController {
         }
         //altura da linha
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 75
+            return 150
         }
         
         
