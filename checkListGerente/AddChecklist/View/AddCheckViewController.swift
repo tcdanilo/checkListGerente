@@ -49,6 +49,13 @@ class AddCheckViewController: UIViewController {
         return picker
     }()
     
+    let datePicker: UIDatePicker = {
+        let dp = UIDatePicker()
+        dp.datePickerMode = .date
+        dp.translatesAutoresizingMaskIntoConstraints = false
+        return dp
+    }()
+    
     
     lazy var addButton : UIButton = {
         let r = UIButton()
@@ -71,6 +78,7 @@ class AddCheckViewController: UIViewController {
         container.addSubview(titleChecklist)
         container.addSubview(addButton)
         container.addSubview(userPicker)
+        container.addSubview(datePicker)
         userPicker.dataSource = self
         userPicker.delegate = self
         fetchUsers()
@@ -116,6 +124,12 @@ class AddCheckViewController: UIViewController {
             userPicker.heightAnchor.constraint(equalToConstant: 50.0)
             
         ]
+        let datePickerConstraints = [
+            datePicker.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            datePicker.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            datePicker.topAnchor.constraint(equalTo: userPicker.bottomAnchor, constant: 15),
+            datePicker.heightAnchor.constraint(equalToConstant: 200)
+        ]
         
         
         
@@ -133,6 +147,7 @@ class AddCheckViewController: UIViewController {
         NSLayoutConstraint.activate(addButtonConstraints)
         NSLayoutConstraint.activate(scrollConstraints)
         NSLayoutConstraint.activate(containerConstraints)
+        NSLayoutConstraint.activate(datePickerConstraints)
         
         
         NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardNotification), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -191,8 +206,9 @@ class AddCheckViewController: UIViewController {
     @objc func addTextField() {
         guard let checklistText = titleChecklist.text else {return}
         guard let assignedUser = getSelectedUser() else {return}
+        let selectedDate = datePicker.date
         
-        PostService.shared.uploadChecklistItem(text: checklistText, assignedUser: assignedUser) { (err, ref) in
+        PostService.shared.uploadChecklistItem(text: checklistText, assignedUser: assignedUser, date: selectedDate) { (err, ref) in
             self.titleChecklist.text = ""
             if let navController = self.navigationController {
                 for viewController in navController.viewControllers {

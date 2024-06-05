@@ -9,11 +9,19 @@ class FeedViewController: UIViewController {
     var viewModel : FeedViewModel?
     var checklistItems = [ChecklistItem]() {
         didSet{
+            filterChecklists(for: selectedDate)
             print("todo items was set")
-            homeFeedTable.reloadData()
+          //  homeFeedTable.reloadData()
         }
     }
+    var filteredChecklistItems = [ChecklistItem]()
+        var selectedDate: Date? {
+            didSet {
+                filterChecklists(for: selectedDate)
+            }
+        }
     private let refreshControl = UIRefreshControl()
+    var collectionViewHeader: CustomHeaderView?
    
   
     private let homeFeedTable : UITableView = { // criação da tabela
@@ -22,6 +30,15 @@ class FeedViewController: UIViewController {
         tv.register(FeedTableViewCell.self, forCellReuseIdentifier: FeedTableViewCell.identifier) // registrou a classe que vai ter dentro das celulas , UItableviewcell
         return tv
     }()
+    private let datesCollectionView: UICollectionView = {
+            let layout = UICollectionViewFlowLayout()
+            layout.scrollDirection = .horizontal
+            let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+            collectionView.translatesAutoresizingMaskIntoConstraints = false
+            collectionView.backgroundColor = .systemBackground
+            collectionView.register(DateCollectionViewCell.self, forCellWithReuseIdentifier: "DateCell")
+            return collectionView
+        }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +47,9 @@ class FeedViewController: UIViewController {
         viewModel?.coordinator = FeedCoordinator(navigationController: navigationController!)
         view.backgroundColor = .systemBackground
         view.addSubview(homeFeedTable)
+        view.addSubview(datesCollectionView)
+        datesCollectionView.dataSource = self
+        datesCollectionView.delegate = self
         homeFeedTable.dataSource = self
         homeFeedTable.delegate = self
         homeFeedTable.separatorColor = .systemGreen
@@ -37,10 +57,25 @@ class FeedViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         homeFeedTable.addSubview(refreshControl)
         fetchItems()
-      
+        setupConstraints()
+        collectionViewHeader = CustomHeaderView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 150))
+        homeFeedTable.tableHeaderView = collectionViewHeader
         
  }
     
+    private func setupConstraints() {
+            NSLayoutConstraint.activate([
+                datesCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+                datesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                datesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                datesCollectionView.heightAnchor.constraint(equalToConstant: 100),
+
+                homeFeedTable.topAnchor.constraint(equalTo: datesCollectionView.bottomAnchor, constant: 16),
+                homeFeedTable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                homeFeedTable.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                homeFeedTable.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16)
+            ])
+        }
     
     private func configureNavBar() {
         navigationItem.title = "Checklists"
@@ -48,9 +83,22 @@ class FeedViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = false
         
     }
+    
+    private func filterChecklists(for date: Date?) {
+            if let date = date {
+                let calendar = Calendar.current
+                filteredChecklistItems = checklistItems.filter { checklist in
+                    return calendar.isDate(checklist.date, inSameDayAs: date)
+                }
+            } else {
+                filteredChecklistItems = checklistItems
+            }
+            homeFeedTable.reloadData()
+        }
     @objc private func handleChecklistItemUpdate() {
         fetchItems()
     }
+    
    
     
     @objc func addItem(_ sender : UIButton) {
@@ -83,6 +131,32 @@ class FeedViewController: UIViewController {
 
 
 }
+
+extension FeedViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 30 // Exibir datas para os próximos 30 dias
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCell", for: indexPath) as! DateCollectionViewCell
+        let date = Date().addingTimeInterval(TimeInterval(86400 * indexPath.item)) // Adiciona `indexPath.item` dias à data atual
+        cell.configure(with: date)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let date = Date().addingTimeInterval(TimeInterval(86400 * indexPath.item))
+        selectedDate = date
+        filterChecklists(for: date)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 100, height: 100) // Tamanho das células
+    }
+}
+
+
 extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // implementando o protocolo e suas funçoes obrigatorias
     // numero de sessões
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -90,7 +164,7 @@ extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // im
     }
     // numero de linhas na seção
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return checklistItems.count
+        return filteredChecklistItems.count
     }
     //altura da linha
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -126,11 +200,12 @@ extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // im
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        
         let cell = tableView.dequeueReusableCell(withIdentifier: FeedTableViewCell.identifier, for: indexPath) as! FeedTableViewCell
-        cell.checklistItem = checklistItems[indexPath.row]
-        return cell
+                cell.checklistItem = filteredChecklistItems[indexPath.row]
+                return cell
+            }
         
     }
     
-}
+
 
 

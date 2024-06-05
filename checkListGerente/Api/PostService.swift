@@ -15,12 +15,14 @@ struct ChecklistItem {
     var isComplete : Bool
     var id : String
     var assignedUser : AppUser?
+    var date: Date
     
     
     init(keyID : String, dictionary: [String: Any]) {
         self.title = dictionary["title"] as? String ?? ""
         self.isComplete = dictionary["isComplete"] as? Bool ?? false
         self.id = dictionary["id"] as? String ?? ""
+        self.date = dictionary["date"] as? Date ?? Date()
         if let assignedUserDict = dictionary["assignedUser"] as? [String: String] {
             self.assignedUser = AppUser(name: assignedUserDict["name"] ?? "", email: assignedUserDict["email"] ?? "")
         } else {
@@ -113,13 +115,14 @@ struct PostService {
     }
     
     
-    public func uploadChecklistItem(text : String,assignedUser : AppUser?, completion : @escaping(Error?, DatabaseReference) -> Void) {
+    public func uploadChecklistItem(text : String,assignedUser : AppUser?, date: Date, completion : @escaping(Error?, DatabaseReference) -> Void) {
         
         let userDict = ["name": assignedUser?.name, "email": assignedUser?.email]
         let values : [String: Any] = [
                       "title" : text ,
                       "isComplete" : false,
-                      "assignedUser": userDict
+                      "assignedUser": userDict,
+                      "date": date.timeIntervalSince1970
                      ] as [String : Any]
         
         let id = db_reference.child("items").childByAutoId()

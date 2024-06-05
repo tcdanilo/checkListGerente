@@ -42,6 +42,8 @@
 		9FA8B5A32BF5008300E48331 /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9FA8B5A22BF5008300E48331 /* FirebaseRemoteConfigSwift */; };
 		9FA8B5A52BF5008300E48331 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 9FA8B5A42BF5008300E48331 /* FirebaseStorage */; };
 		9FA8B5A72BF5008300E48331 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 9FA8B5A62BF5008300E48331 /* FirebaseStorageCombine-Community */; };
+		9FC6D7B62C051C0C0032B0BC /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC6D7B52C051C0C0032B0BC /* DateCollectionViewCell.swift */; };
+		9FC6D7B82C0524550032B0BC /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FC6D7B72C0524550032B0BC /* CustomHeaderView.swift */; };
 		9FEC77B92BF4E1BD00523BCC /* HomeUserCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77B82BF4E1BD00523BCC /* HomeUserCoordinator.swift */; };
 		9FEC77BB2BF4E1CA00523BCC /* HomeUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77BA2BF4E1CA00523BCC /* HomeUserViewController.swift */; };
 		9FEC77BD2BF4E1D600523BCC /* HomeUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77BC2BF4E1D600523BCC /* HomeUserViewModel.swift */; };
@@ -83,6 +85,8 @@
 		9F88E6602BB4C04E00EB8315 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		9F88E6642BB4C71300EB8315 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		9F88E6662BB4C72600EB8315 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		9FC6D7B52C051C0C0032B0BC /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
+		9FC6D7B72C0524550032B0BC /* CustomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
 		9FEC77B82BF4E1BD00523BCC /* HomeUserCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserCoordinator.swift; sourceTree = "<group>"; };
 		9FEC77BA2BF4E1CA00523BCC /* HomeUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserViewController.swift; sourceTree = "<group>"; };
 		9FEC77BC2BF4E1D600523BCC /* HomeUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserViewModel.swift; sourceTree = "<group>"; };
@@ -357,6 +361,8 @@
 			children = (
 				9FEC77C42BF4E69500523BCC /* FeedUserTableViewCell.swift */,
 				9FEC77C62BF4E6E500523BCC /* FeedUserViewController.swift */,
+				9FC6D7B52C051C0C0032B0BC /* DateCollectionViewCell.swift */,
+				9FC6D7B72C0524550032B0BC /* CustomHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -548,6 +554,7 @@
 				9F88E6672BB4C72600EB8315 /* ProfileViewController.swift in Sources */,
 				9FEC77C72BF4E6E500523BCC /* FeedUserViewController.swift in Sources */,
 				9FF5FF4D2BD7F8BA00EF7877 /* AddCheckListViewModel.swift in Sources */,
+				9FC6D7B82C0524550032B0BC /* CustomHeaderView.swift in Sources */,
 				9FEC77CD2BF4E91800523BCC /* ProfileUserViewController.swift in Sources */,
 				9F6CE07B2BFB93B70093A2B1 /* PostService.swift in Sources */,
 				9F88E64A2BB3554F00EB8315 /* SignInViewModel.swift in Sources */,
@@ -555,6 +562,7 @@
 				9F6CE0782BFB8C700093A2B1 /* Extension+UIView.swift in Sources */,
 				9F88E6482BB3533C00EB8315 /* SignInViewController.swift in Sources */,
 				9F88E6612BB4C04E00EB8315 /* HomeViewModel.swift in Sources */,
+				9FC6D7B62C051C0C0032B0BC /* DateCollectionViewCell.swift in Sources */,
 				9FEC77BD2BF4E1D600523BCC /* HomeUserViewModel.swift in Sources */,
 				9FEC77BB2BF4E1CA00523BCC /* HomeUserViewController.swift in Sources */,
 				9F65DFF52BD99924002F24A3 /* FeedViewModel.swift in Sources */,
