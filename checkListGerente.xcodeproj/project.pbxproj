@@ -41,7 +41,7 @@
 		9FA8B5A32BF5008300E48331 /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9FA8B5A22BF5008300E48331 /* FirebaseRemoteConfigSwift */; };
 		9FA8B5A52BF5008300E48331 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 9FA8B5A42BF5008300E48331 /* FirebaseStorage */; };
 		9FA8B5A72BF5008300E48331 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 9FA8B5A62BF5008300E48331 /* FirebaseStorageCombine-Community */; };
-		9FD60D682C1094F600FABF2E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9FD60D672C1094F600FABF2E /* GoogleService-Info.plist */; };
+		9FCA03382C11044500DEE5C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9FCA03372C11044500DEE5C0 /* GoogleService-Info.plist */; };
 		9FEC77B92BF4E1BD00523BCC /* HomeUserCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77B82BF4E1BD00523BCC /* HomeUserCoordinator.swift */; };
 		9FEC77BB2BF4E1CA00523BCC /* HomeUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77BA2BF4E1CA00523BCC /* HomeUserViewController.swift */; };
 		9FEC77BD2BF4E1D600523BCC /* HomeUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77BC2BF4E1D600523BCC /* HomeUserViewModel.swift */; };
@@ -81,8 +81,8 @@
 		9F88E6602BB4C04E00EB8315 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		9F88E6642BB4C71300EB8315 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		9F88E6662BB4C72600EB8315 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		9FCA03362C10B0C500DEE5C0 /* checkListGerente.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = checkListGerente.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9FD60D672C1094F600FABF2E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9FCA03362C10B0C500DEE5C0 /* checkListGerente.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = checkListGerente.app; path = "/Users/danilo/Documents/Swift projetos/checkListGerente/build/Debug-iphoneos/checkListGerente.app"; sourceTree = "<absolute>"; };
+		9FCA03372C11044500DEE5C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9FEC77B82BF4E1BD00523BCC /* HomeUserCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserCoordinator.swift; sourceTree = "<group>"; };
 		9FEC77BA2BF4E1CA00523BCC /* HomeUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserViewController.swift; sourceTree = "<group>"; };
 		9FEC77BC2BF4E1D600523BCC /* HomeUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserViewModel.swift; sourceTree = "<group>"; };
@@ -173,7 +173,6 @@
 			isa = PBXGroup;
 			children = (
 				9F88E62D2BB352A000EB8315 /* checkListGerente */,
-				9FCA03362C10B0C500DEE5C0 /* checkListGerente.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -198,7 +197,7 @@
 				9F88E6372BB352A200EB8315 /* Assets.xcassets */,
 				9F88E6392BB352A200EB8315 /* LaunchScreen.storyboard */,
 				9F88E63C2BB352A200EB8315 /* Info.plist */,
-				9FD60D672C1094F600FABF2E /* GoogleService-Info.plist */,
+				9FCA03372C11044500DEE5C0 /* GoogleService-Info.plist */,
 			);
 			path = checkListGerente;
 			sourceTree = "<group>";
@@ -514,7 +513,7 @@
 			files = (
 				9F88E6382BB352A200EB8315 /* Assets.xcassets in Resources */,
 				9F88E63B2BB352A200EB8315 /* Base in Resources */,
-				9FD60D682C1094F600FABF2E /* GoogleService-Info.plist in Resources */,
+				9FCA03382C11044500DEE5C0 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

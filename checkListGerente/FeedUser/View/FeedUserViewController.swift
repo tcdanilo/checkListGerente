@@ -10,21 +10,22 @@ import FirebaseAuth
 
 class FeedUserViewController: UIViewController {
     
-    var viewModel : FeedUserViewModel?
-    var checklistItems = [ChecklistItem]() {
-        didSet{
-            // filterChecklistItems()
-            print("todo items was set")
+    var viewModel: FeedUserViewModel?
+    var groupedChecklistItems = [String: [ChecklistItem]]() {
+        didSet {
             homeFeedUserTable.reloadData()
         }
     }
+    var sortedDates: [String] {
+        return groupedChecklistItems.keys.sorted()
+    }
+    
     private let refreshControl = UIRefreshControl()
     
-    
-    private let homeFeedUserTable : UITableView = { // criação da tabela
+    private let homeFeedUserTable: UITableView = {
         let tv = UITableView(frame: .zero, style: .grouped)
         tv.backgroundColor = UIColor.systemBackground
-        tv.register(FeedUserTableViewCell.self, forCellReuseIdentifier: FeedUserTableViewCell.identifier) // registrou a classe que vai ter dentro das celulas , UItableviewcell
+        tv.register(FeedUserTableViewCell.self, forCellReuseIdentifier: FeedUserTableViewCell.identifier)
         return tv
     }()
     
@@ -41,10 +42,7 @@ class FeedUserViewController: UIViewController {
         homeFeedUserTable.addSubview(refreshControl)
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         fetchItems()
-      
     }
-    
-    
     
     public func fetchItems() {
         guard let currentUser = Auth.auth().currentUser else { return }
@@ -52,79 +50,113 @@ class FeedUserViewController: UIViewController {
         
         PostService.shared.fetchAllItems(for: user) { allItems in
             DispatchQueue.main.async {
-                self.checklistItems = allItems
+                self.groupedChecklistItems = Dictionary(grouping: allItems) { item in
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.locale = Locale(identifier: "pt_BR")
+                    dateFormatter.dateFormat = "MMMM, dd" // Agrupando por mês e dia
+                    return dateFormatter.string(from: item.date)
+                }
                 self.homeFeedUserTable.reloadData()
                 self.refreshControl.endRefreshing()
             }
         }
     }
     
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        homeFeedUserTable.frame = view.bounds // tableView na tela toda
+        homeFeedUserTable.frame = view.bounds
     }
     
     @objc private func refreshData() {
         fetchItems()
     }
     
+    private func showCompletionAlert(for item: ChecklistItem, at indexPath: IndexPath) {
+            if item.isComplete {
+                // O item já está completo, não permitir alterações
+                let alertController = UIAlertController(title: "Item já realizado", message: "Este item já foi realizado e não pode ser alterado.", preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alertController.addAction(okAction)
+                present(alertController, animated: true, completion: nil)
+            } else {
+                let alertController = UIAlertController(title: "Realizar?", message: "Adicione um comentário:", preferredStyle: .alert)
+                alertController.addTextField { (textField) in
+                    textField.placeholder = "Comentário"
+                }
+                let completeAction = UIAlertAction(title: "Sim", style: .default) { [weak self] _ in
+                    guard let self = self else { return }
+                    let comment = alertController.textFields?.first?.text ?? ""
+                    self.updateChecklistItem(item, at: indexPath, with: true, comment: comment)
+                }
+                let cancelAction = UIAlertAction(title: "Não", style: .cancel, handler: nil)
+                alertController.addAction(completeAction)
+                alertController.addAction(cancelAction)
+                present(alertController, animated: true, completion: nil)
+            }
+        }
     
-    
-    
-}
-    extension FeedUserViewController : UITableViewDataSource, UITableViewDelegate{ // implementando o protocolo e suas funçoes obrigatorias
-        // numero de sessões
-        func numberOfSections(in tableView: UITableView) -> Int {
-            return 1
-        }
-        // numero de linhas na seção
-        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return checklistItems.count
-        }
-        //altura da linha
-        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            return 150
-        }
-        
-        
-        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {    // altura das sessoes
-            return 40.0
-        }
-        
-        
-        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let checklistItem = checklistItems[indexPath.row]
-            let newStatus = !checklistItem.isComplete
-            
-            PostService.shared.updateChecklistItemCompletionStatus(checklistID: checklistItem.id, isComplete: newStatus) { error, ref in
+    private func updateChecklistItem(_ item: ChecklistItem, at indexPath: IndexPath, with isComplete: Bool, comment: String) {
+            PostService.shared.updateChecklistItemCompletionStatus(checklistID: item.id, isComplete: isComplete, comment: comment) { [weak self] error, ref in
+                guard let self = self else { return }
                 if error == nil {
-                    // Atualiza o status do item no array de dados
-                    self.checklistItems[indexPath.row].isComplete = newStatus
-                    
-                    DispatchQueue.main.async {
-                        // Recarrega apenas a última linha da tabela
-                        let lastIndexPath = IndexPath(row: self.checklistItems.count - 1, section: 0)
-                        self.homeFeedUserTable.reloadRows(at: [lastIndexPath], with: .automatic)
+                    let dateKey = self.sortedDates[indexPath.section]
+                    if var items = self.groupedChecklistItems[dateKey] {
+                        items[indexPath.row].isComplete = isComplete
+                        items[indexPath.row].comment = comment
+                        self.groupedChecklistItems[dateKey] = items
+                        
+                        DispatchQueue.main.async {
+                            self.homeFeedUserTable.reloadRows(at: [indexPath], with: .automatic)
+                        }
                     }
                 } else {
                     print("Erro ao atualizar status: \(error?.localizedDescription ?? "Unknown error")")
                 }
             }
         }
+}
 
-       
-        
-        //qual a celula para a linha especifica
-        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-           
-            let cell = tableView.dequeueReusableCell(withIdentifier: FeedUserTableViewCell.identifier, for: indexPath) as! FeedUserTableViewCell
-            cell.checklistItem = checklistItems[indexPath.row]
-            return cell
-            
-        }
-        
+extension FeedUserViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sortedDates.count
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let dateKey = sortedDates[section]
+        return groupedChecklistItems[dateKey]?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sortedDates[section].capitalized // Para capitalizar o mês
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40.0
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let dateKey = sortedDates[indexPath.section]
+        if let checklistItem = groupedChecklistItems[dateKey]?[indexPath.row] {
+            showCompletionAlert(for: checklistItem, at: indexPath)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: FeedUserTableViewCell.identifier, for: indexPath) as! FeedUserTableViewCell
+        let dateKey = sortedDates[indexPath.section]
+        if let checklistItem = groupedChecklistItems[dateKey]?[indexPath.row] {
+            cell.checklistItem = checklistItem
+        }
+        return cell
+    }
+}
+
+
+
 
 
 

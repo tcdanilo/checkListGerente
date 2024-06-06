@@ -3,24 +3,24 @@
 import UIKit
 import Firebase
 
-
-
 class FeedViewController: UIViewController {
     
-    var viewModel : FeedViewModel?
-    var checklistItems = [ChecklistItem]() {
-        didSet{
-            print("todo items was set")
+    var viewModel: FeedViewModel?
+    var groupedChecklistItems = [String: [ChecklistItem]]() {
+        didSet {
             homeFeedTable.reloadData()
         }
     }
+    var sortedDates: [String] {
+        return groupedChecklistItems.keys.sorted()
+    }
+    
     private let refreshControl = UIRefreshControl()
    
-  
-    private let homeFeedTable : UITableView = { // criação da tabela
+    private let homeFeedTable: UITableView = {
         let tv = UITableView(frame: .zero, style: .grouped)
         tv.backgroundColor = UIColor.systemBackground
-        tv.register(FeedTableViewCell.self, forCellReuseIdentifier: FeedTableViewCell.identifier) // registrou a classe que vai ter dentro das celulas , UItableviewcell
+        tv.register(FeedTableViewCell.self, forCellReuseIdentifier: FeedTableViewCell.identifier)
         return tv
     }()
     
@@ -40,107 +40,91 @@ class FeedViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         homeFeedTable.addSubview(refreshControl)
         fetchItems()
-      
-       
- }
-    
+    }
     
     private func configureNavBar() {
         navigationItem.title = "Checklists"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
         navigationController?.navigationBar.prefersLargeTitles = false
-        
     }
-    
-   
     
     @objc private func handleChecklistItemUpdate() {
         fetchItems()
     }
-   
     
-    @objc func addItem(_ sender : UIButton) {
+    @objc func addItem(_ sender: UIButton) {
         viewModel?.goToAddChecklist()
     }
+    
     @objc private func refreshData() {
-            fetchItems()
-        }
+        fetchItems()
+    }
     
     public func fetchItems(for date: Date? = nil) {
         PostService.shared.fetchAllItemsAdmin() { allItems in
-                DispatchQueue.main.async {
-                    
-                    self.checklistItems = allItems
-                    self.homeFeedTable.reloadData()
-                    self.refreshControl.endRefreshing()
+            DispatchQueue.main.async {
+                self.groupedChecklistItems = Dictionary(grouping: allItems) { item in
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.locale = Locale(identifier: "pt_BR")
+                    dateFormatter.dateFormat = "MMMM, dd" // Agrupando por mês e dia
+                    return dateFormatter.string(from: item.date)
                 }
+                self.homeFeedTable.reloadData()
+                self.refreshControl.endRefreshing()
             }
+        }
     }
     
-    
-    
-    
- 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         homeFeedTable.frame = view.bounds // tableView na tela toda
     }
     
-   
-
-
+    private func showCommentDetails(for item: ChecklistItem) {
+        let alertController = UIAlertController(title: item.title, message: item.comment ?? "No comment", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
-
-
-extension FeedViewController : UITableViewDataSource, UITableViewDelegate{ // implementando o protocolo e suas funçoes obrigatorias
-    // numero de sessões
+extension FeedViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return sortedDates.count
     }
-    // numero de linhas na seção
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return checklistItems.count
+        let dateKey = sortedDates[section]
+        return groupedChecklistItems[dateKey]?.count ?? 0
     }
-    //altura da linha
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sortedDates[section].capitalized // Para capitalizar o mês
+    }
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
-    
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {    // altura das sessoes
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40.0
     }
-    
-    
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//            let checklistItem = checklistItems[indexPath.row]
-//            let newStatus = !checklistItem.isComplete
-//            
-//            PostService.shared.updateChecklistItemCompletionStatus(checklistID: checklistItem.id, isComplete: newStatus) { error, ref in
-//                if error == nil {
-//                    self.checklistItems[indexPath.row].isComplete = newStatus
-//                    DispatchQueue.main.async {
-//                        self.homeFeedTable.reloadRows(at: [indexPath], with: .automatic)
-//                        
-//                    }
-//                } else {
-//                    print("Erro ao atualizar status: \(error?.localizedDescription ?? "Unknown error")")
-//                }
-//            }
-//        }
 
-   
-    
-    //qual a celula para a linha especifica
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
-        let cell = tableView.dequeueReusableCell(withIdentifier: FeedTableViewCell.identifier, for: indexPath) as! FeedTableViewCell
-        cell.checklistItem = checklistItems[indexPath.row]
-        return cell
-        
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let dateKey = sortedDates[indexPath.section]
+        if let checklistItem = groupedChecklistItems[dateKey]?[indexPath.row] {
+            showCommentDetails(for: checklistItem)
+        }
     }
-    
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: FeedTableViewCell.identifier, for: indexPath) as! FeedTableViewCell
+        let dateKey = sortedDates[indexPath.section]
+        if let checklistItem = groupedChecklistItems[dateKey]?[indexPath.row] {
+            cell.checklistItem = checklistItem
+        }
+        return cell
+    }
 }
 
 

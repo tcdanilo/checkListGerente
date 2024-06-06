@@ -156,12 +156,14 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
     @objc func logoffTapped() {
         do {
             try Auth.auth().signOut()
-            if let window = UIApplication.shared.windows.first {
-                let signInVC = SignInViewController()
-                let navController = UINavigationController(rootViewController: signInVC)
-                navController.modalPresentationStyle = .fullScreen
-                window.rootViewController = navController
-                window.makeKeyAndVisible()
+            dismiss(animated: true) {
+                if let window = UIApplication.shared.windows.first {
+                    let signInVC = SignInViewController()
+                    let navController = UINavigationController(rootViewController: signInVC)
+                    navController.modalPresentationStyle = .fullScreen
+                    window.rootViewController = navController
+                    window.makeKeyAndVisible()
+                }
             }
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
@@ -170,6 +172,7 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate &
             present(alert, animated: true, completion: nil)
         }
     }
+
 
     @objc func changePasswordDidTap() {
         guard let currentUser = Auth.auth().currentUser else {

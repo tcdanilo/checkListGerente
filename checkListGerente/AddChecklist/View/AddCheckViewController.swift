@@ -135,9 +135,9 @@ class AddCheckViewController: UIViewController {
     @objc func addTextField() {
         guard let checklistText = titleChecklist.text else {return}
         guard let assignedUser = getSelectedUser() else {return}
-        //let selectedDate = datePicker.date
+       let currentDate = Date()
         
-        PostService.shared.uploadChecklistItem(text: checklistText, assignedUser: assignedUser) { (err, ref) in
+        PostService.shared.uploadChecklistItem(text: checklistText, assignedUser: assignedUser, date : currentDate) { (err, ref) in
             self.titleChecklist.text = ""
             if let navController = self.navigationController {
                 for viewController in navController.viewControllers {
