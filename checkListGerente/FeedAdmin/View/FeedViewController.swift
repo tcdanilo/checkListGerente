@@ -44,16 +44,15 @@ class FeedViewController: UIViewController {
     
     private func configureNavBar() {
         navigationItem.title = "Checklists"
-
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
         
         // Botão para ativar o modo de edição
-        let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(toggleEditMode))
+      //  let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(toggleEditMode))
         
         // Botão para deletar todos os checklists
         let deleteAllButton = UIBarButtonItem(title: "Delete All", style: .plain, target: self, action: #selector(deleteAllItems))
         
-        navigationItem.leftBarButtonItems = [editButton, deleteAllButton]
+        navigationItem.leftBarButtonItems = [ deleteAllButton]
         navigationController?.navigationBar.prefersLargeTitles = false
     }
     
@@ -69,9 +68,10 @@ class FeedViewController: UIViewController {
         fetchItems()
     }
     
-    @objc private func toggleEditMode() {
-        homeFeedTable.setEditing(!homeFeedTable.isEditing, animated: true)
-    }
+//    @objc private func toggleEditMode() {
+//        homeFeedTable.setEditing(!homeFeedTable.isEditing, animated: true)
+//        homeFeedTable.reloadData()
+//    }
     
     @objc private func deleteAllItems() {
         let alertController = UIAlertController(title: "Delete All", message: "Tem certeza que quer apagar todos os checklists?", preferredStyle: .alert)
@@ -90,7 +90,8 @@ class FeedViewController: UIViewController {
                 print("Error deleting all checklists: \(error)")
                 return
             }
-            self.fetchItems()
+            self.groupedChecklistItems.removeAll()
+            self.homeFeedTable.reloadData()
         }
     }
     
@@ -157,6 +158,11 @@ extension FeedViewController: UITableViewDataSource, UITableViewDelegate {
         if let checklistItem = groupedChecklistItems[dateKey]?[indexPath.row] {
             cell.checklistItem = checklistItem
         }
+
+        // Adiciona o deslocamento para a direita quando estiver no modo de edição
+        let editModePadding: CGFloat = homeFeedTable.isEditing ? 40 : 0
+        cell.contentView.frame = cell.contentView.frame.offsetBy(dx: editModePadding, dy: 0)
+        
         return cell
     }
     
