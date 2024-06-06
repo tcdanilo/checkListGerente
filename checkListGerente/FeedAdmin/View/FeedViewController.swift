@@ -35,7 +35,7 @@ class FeedViewController: UIViewController {
         homeFeedTable.dataSource = self
         homeFeedTable.delegate = self
 
-        homeFeedTable.separatorColor = .systemGreen
+        homeFeedTable.separatorColor = .systemOrange
         homeFeedTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         homeFeedTable.addSubview(refreshControl)
@@ -44,7 +44,16 @@ class FeedViewController: UIViewController {
     
     private func configureNavBar() {
         navigationItem.title = "Checklists"
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
+        
+        // Botão para ativar o modo de edição
+        let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(toggleEditMode))
+        
+        // Botão para deletar todos os checklists
+        let deleteAllButton = UIBarButtonItem(title: "Delete All", style: .plain, target: self, action: #selector(deleteAllItems))
+        
+        navigationItem.leftBarButtonItems = [editButton, deleteAllButton]
         navigationController?.navigationBar.prefersLargeTitles = false
     }
     
@@ -58,6 +67,31 @@ class FeedViewController: UIViewController {
     
     @objc private func refreshData() {
         fetchItems()
+    }
+    
+    @objc private func toggleEditMode() {
+        homeFeedTable.setEditing(!homeFeedTable.isEditing, animated: true)
+    }
+    
+    @objc private func deleteAllItems() {
+        let alertController = UIAlertController(title: "Delete All", message: "Tem certeza que quer apagar todos os checklists?", preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "Apagar", style: .destructive) { _ in
+            self.deleteAllChecklists()
+        }
+        let cancelAction = UIAlertAction(title: "Não", style: .cancel, handler: nil)
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func deleteAllChecklists() {
+        PostService.shared.db_reference.child("items").removeValue { error, _ in
+            if let error = error {
+                print("Error deleting all checklists: \(error)")
+                return
+            }
+            self.fetchItems()
+        }
     }
     
     public func fetchItems(for date: Date? = nil) {
@@ -81,7 +115,7 @@ class FeedViewController: UIViewController {
     }
     
     private func showCommentDetails(for item: ChecklistItem) {
-        let alertController = UIAlertController(title: item.title, message: item.comment ?? "No comment", preferredStyle: .alert)
+        let alertController = UIAlertController(title: item.title, message: item.comment ?? "Sem comentários", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
@@ -125,7 +159,24 @@ extension FeedViewController: UITableViewDataSource, UITableViewDelegate {
         }
         return cell
     }
+    
+    // Suporte para deletar checklists individualmente
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let dateKey = sortedDates[indexPath.section]
+            if let itemToDelete = groupedChecklistItems[dateKey]?[indexPath.row] {
+                PostService.shared.db_reference.child("items").child(itemToDelete.id).removeValue { error, _ in
+                    if let error = error {
+                        print("Error deleting checklist item: \(error)")
+                        return
+                    }
+                    self.fetchItems()
+                }
+            }
+        }
+    }
 }
+
 
 
 

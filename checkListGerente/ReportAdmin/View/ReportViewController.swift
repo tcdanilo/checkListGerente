@@ -34,7 +34,7 @@ class ReportViewController: UIViewController {
         super.viewDidLoad()
         title = "Relatórios"
         view.backgroundColor = .systemBackground
-        tableView.separatorColor = .systemGreen
+        tableView.separatorColor = .systemOrange
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         setupLayout()
         setupTableView()

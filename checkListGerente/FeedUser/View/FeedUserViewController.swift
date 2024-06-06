@@ -72,48 +72,49 @@ class FeedUserViewController: UIViewController {
     }
     
     private func showCompletionAlert(for item: ChecklistItem, at indexPath: IndexPath) {
-            if item.isComplete {
-                // O item já está completo, não permitir alterações
-                let alertController = UIAlertController(title: "Item já realizado", message: "Este item já foi realizado e não pode ser alterado.", preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                alertController.addAction(okAction)
-                present(alertController, animated: true, completion: nil)
-            } else {
-                let alertController = UIAlertController(title: "Realizar?", message: "Adicione um comentário:", preferredStyle: .alert)
-                alertController.addTextField { (textField) in
-                    textField.placeholder = "Comentário"
-                }
-                let completeAction = UIAlertAction(title: "Sim", style: .default) { [weak self] _ in
-                    guard let self = self else { return }
-                    let comment = alertController.textFields?.first?.text ?? ""
-                    self.updateChecklistItem(item, at: indexPath, with: true, comment: comment)
-                }
-                let cancelAction = UIAlertAction(title: "Não", style: .cancel, handler: nil)
-                alertController.addAction(completeAction)
-                alertController.addAction(cancelAction)
-                present(alertController, animated: true, completion: nil)
+        if item.isComplete {
+            // O item já está completo, não permitir alterações
+            let alertController = UIAlertController(title: "Item já realizado", message: "Este item já foi realizado e não pode ser alterado.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            present(alertController, animated: true, completion: nil)
+        } else {
+            let alertController = UIAlertController(title: "Realizar Checklist", message: "Adicione um comentário:", preferredStyle: .alert)
+            alertController.addTextField { (textField) in
+                textField.placeholder = "escreva seu comentário"
             }
+            let completeAction = UIAlertAction(title: "Sim", style: .default) { [weak self] _ in
+                guard let self = self else { return }
+                let comment = alertController.textFields?.first?.text ?? ""
+                self.updateChecklistItem(item, at: indexPath, with: true, comment: comment)
+            }
+            let cancelAction = UIAlertAction(title: "Não", style: .cancel, handler: nil)
+            
+            alertController.addAction(completeAction)
+            alertController.addAction(cancelAction)
+            present(alertController, animated: true, completion: nil)
         }
+    }
     
     private func updateChecklistItem(_ item: ChecklistItem, at indexPath: IndexPath, with isComplete: Bool, comment: String) {
-            PostService.shared.updateChecklistItemCompletionStatus(checklistID: item.id, isComplete: isComplete, comment: comment) { [weak self] error, ref in
-                guard let self = self else { return }
-                if error == nil {
-                    let dateKey = self.sortedDates[indexPath.section]
-                    if var items = self.groupedChecklistItems[dateKey] {
-                        items[indexPath.row].isComplete = isComplete
-                        items[indexPath.row].comment = comment
-                        self.groupedChecklistItems[dateKey] = items
-                        
-                        DispatchQueue.main.async {
-                            self.homeFeedUserTable.reloadRows(at: [indexPath], with: .automatic)
-                        }
+        PostService.shared.updateChecklistItemCompletionStatus(checklistID: item.id, isComplete: isComplete, comment: comment) { [weak self] error, ref in
+            guard let self = self else { return }
+            if error == nil {
+                let dateKey = self.sortedDates[indexPath.section]
+                if var items = self.groupedChecklistItems[dateKey] {
+                    items[indexPath.row].isComplete = isComplete
+                    items[indexPath.row].comment = comment
+                    self.groupedChecklistItems[dateKey] = items
+                    
+                    DispatchQueue.main.async {
+                        self.homeFeedUserTable.reloadRows(at: [indexPath], with: .automatic)
                     }
-                } else {
-                    print("Erro ao atualizar status: \(error?.localizedDescription ?? "Unknown error")")
                 }
+            } else {
+                print("Erro ao atualizar status: \(error?.localizedDescription ?? "Unknown error")")
             }
         }
+    }
 }
 
 extension FeedUserViewController: UITableViewDataSource, UITableViewDelegate {
@@ -154,7 +155,6 @@ extension FeedUserViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 }
-
 
 
 

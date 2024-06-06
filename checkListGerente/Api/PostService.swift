@@ -16,21 +16,24 @@ struct ChecklistItem {
     var id: String
     var assignedUser: AppUser?
     var comment: String?
-    var date : Date
+    var date: Date
     
     init(keyID: String, dictionary: [String: Any]) {
         self.title = dictionary["title"] as? String ?? ""
         self.isComplete = dictionary["isComplete"] as? Bool ?? false
         self.id = dictionary["id"] as? String ?? ""
         self.comment = dictionary["comment"] as? String ?? ""
+        if let timestamp = dictionary["date"] as? TimeInterval {
+            self.date = Date(timeIntervalSince1970: timestamp) // Converte TimeInterval de volta para Date
+        } else {
+            self.date = Date()
+        }
         if let assignedUserDict = dictionary["assignedUser"] as? [String: String] {
             self.assignedUser = AppUser(name: assignedUserDict["name"] ?? "", email: assignedUserDict["email"] ?? "")
         } else {
             self.assignedUser = nil
         }
-        self.date = dictionary["date"] as? Date ?? Date()
     }
-    
 }
 
 struct AppUser {
@@ -112,7 +115,7 @@ struct PostService {
             "title": text,
             "isComplete": false,
             "assignedUser": userDict,
-            "date" : date
+            "date" : date.timeIntervalSince1970
         ]
         
         let id = db_reference.child("items").childByAutoId()
