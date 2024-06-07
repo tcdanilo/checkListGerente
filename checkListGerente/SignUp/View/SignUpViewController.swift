@@ -220,67 +220,72 @@ class SignUpViewController : UIViewController{
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-    func showSucess(message : String){
-        let alert = UIAlertController(title: "Sucesso", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel,handler: nil))
-        present(alert,animated: true,completion: nil)
-        
-    }
     
+    func showSuccess(message: String) {
+        let alert = UIAlertController(title: "Sucesso", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
     
     @objc func registerDidTap() {
         nameTextField.resignFirstResponder()
         emailTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
         
-        
-        guard let email = emailTextField.text,
-              let password = passwordTextField.text,
-              let name = nameTextField.text,
-              !email.isEmpty,
-              !name.isEmpty,
-              password.count >= 6 else {
-            alertingUserLoginError(message: "Erro ao registrar usuário")
-            return }
-        
-        PostService.shared.userExists(with: email, completion: {[weak self] exists in
-            guard let strongSelf = self else {
-                return
-            }
-            //user existe
-            guard !exists else {
-                strongSelf.alertingUserLoginError(message: "looks like a user account for that email address already exists")
-                return
-            }
-            
-       
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            
-            if let error = error {
-                    print("Erro ao criar usuário: \(error.localizedDescription)")
-                    return
-                }
-                
-                guard let authResult = authResult else {
-                    print("Erro desconhecido ao criar usuário.")
-                    return
-                }
-                
-                let user = authResult.user
-            let appUser = AppUser(name: name, email: email)
-                PostService.shared.insertUser(with: appUser, uid: user.uid)
-            
-            let SignInVC = SignInViewController()
-            strongSelf.navigationController?.pushViewController(SignInVC, animated: true)
-            
+        guard let email = emailTextField.text, !email.isEmpty,
+              let password = passwordTextField.text, password.count >= 6,
+              let name = nameTextField.text, !name.isEmpty else {
+            alertingUserLoginError(message: "Por favor, preencha todos os campos corretamente.")
+            return
         }
         
-    })
+        register.isEnabled = false
+        register.alpha = 0.5
+        
+        PostService.shared.userExists(with: email) { [weak self] exists in
+            guard let strongSelf = self else { return }
+            
+            if exists {
+                strongSelf.alertingUserLoginError(message: "Uma conta com esse e-mail já existe.")
+                strongSelf.register.isEnabled = true
+                return
+            }
+            
+            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                strongSelf.register.isEnabled = true
+                strongSelf.register.alpha = 1.0
+                if let error = error as NSError? {
+                    if let authErrorCode = AuthErrorCode.Code(rawValue: error.code){
+                        switch authErrorCode {
+                        case .networkError:
+                            strongSelf.alertingUserLoginError(message: "Erro de rede. Verifique sua conexão.")
+                        case .emailAlreadyInUse:
+                            strongSelf.alertingUserLoginError(message: "E-mail já está em uso. Tente outro.")
+                        case .weakPassword:
+                            strongSelf.alertingUserLoginError(message: "Senha muito fraca. Tente uma mais forte.")
+                        default:
+                            strongSelf.alertingUserLoginError(message: "Erro ao criar conta: \(error.localizedDescription)")
+                        }
+                        return
+                    }
+                    
+                    guard let user = authResult?.user else {
+                        strongSelf.alertingUserLoginError(message: "Erro desconhecido ao criar usuário.")
+                        return
+                    }
+                    
+                    let appUser = AppUser(name: name, email: email)
+                    PostService.shared.insertUser(with: appUser, uid: user.uid)
+                    
+                    let signInVC = SignInViewController()
+                    strongSelf.navigationController?.pushViewController(signInVC, animated: true)
+                    strongSelf.showSuccess(message: "Usuário cadastrado com sucesso!")
+                }
+            }
+        }
     }
+    
 }
-                                      
-    
-    
     extension SignUpViewController: UITextFieldDelegate {
         
         func textFieldShouldReturn(_ textField: UITextField) -> Bool {

@@ -37,7 +37,7 @@ class FeedUserViewController: UIViewController {
         view.addSubview(homeFeedUserTable)
         homeFeedUserTable.dataSource = self
         homeFeedUserTable.delegate = self
-        homeFeedUserTable.separatorColor = .systemGreen
+        homeFeedUserTable.separatorColor = .systemOrange
         homeFeedUserTable.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         homeFeedUserTable.addSubview(refreshControl)
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)

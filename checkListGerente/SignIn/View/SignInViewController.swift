@@ -67,6 +67,7 @@ class SignInViewController: UIViewController {
         btn.backgroundColor = .systemOrange
         btn.title = "Entrar"
         btn.addTarget(self, action: #selector(sendDidTap))
+        btn.alpha = 1.0
         return btn
     }()
     
@@ -206,48 +207,50 @@ class SignInViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-    
-    
-    @objc func sendDidTap(_ sender : UIButton) {
-        guard let email = email.text,
-              let password = password.text else {
-            showError(message: "Por favor, preencha todos os campos.")
-            return
-        }
-       
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
-            guard let strongSelf = self else { return }
-            
-            guard let _ = authResult, error == nil else {
-                print("falha ao logar o usuario com email : \(email)")
+        
+    @objc func sendDidTap(_ sender: UIButton) {
+            guard let email = email.text, !email.isEmpty,
+                  let password = password.text, !password.isEmpty else {
+                showError(message: "Por favor, preencha todos os campos.")
                 return
             }
-          
-            if let user = Auth.auth().currentUser?.email{
-                print("logado com o usuario \(String(describing: user))")
-            }else {
-                print("nao logou")
-            }
-  
-            if let error = error {
-                print("Erro ao fazer login:", error.localizedDescription)
-                strongSelf.showError(message: "Erro ao fazer login")
-            } else {
+           
+            sender.isEnabled = false
+            sender.alpha = 0.5
+            Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
+                guard let strongSelf = self else { return }
+                sender.isEnabled = true
+                sender.alpha = 1.0
+                
+                if let error = error as NSError? {
+                    if let authErrorCode = AuthErrorCode.Code(rawValue: error.code) {
+                        switch authErrorCode {
+                        case .networkError:
+                            strongSelf.showError(message: "Erro de rede. Verifique sua conexão.")
+                        case .userNotFound:
+                            strongSelf.showError(message: "Usuário não encontrado. Verifique seu e-mail.")
+                        case .wrongPassword:
+                            strongSelf.showError(message: "Senha incorreta. Tente novamente.")
+                        default:
+                            strongSelf.showError(message: "Erro ao fazer login: \(error.localizedDescription)")
+                        }
+                    } else {
+                        strongSelf.showError(message: "Erro ao fazer login: \(error.localizedDescription)")
+                    }
+                    return
+                }
+                
                 print("Login bem-sucedido!")
                 if let currentUser = Auth.auth().currentUser {
                     if currentUser.email == "danilotiago3@hotmail.com" {
                         strongSelf.viewModel?.goToHomeAdmin()
-                    }else {
+                    } else {
                         strongSelf.viewModel?.goToHomeUser()
                     }
-                    
                 }
-             
             }
-          
         }
-            
-        }
+        
         
         @objc func registerDidTap(_ sender : UIButton){
             viewModel?.goToSignUp()

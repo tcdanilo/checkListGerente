@@ -50,8 +50,6 @@
 		9FEC77C72BF4E6E500523BCC /* FeedUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77C62BF4E6E500523BCC /* FeedUserViewController.swift */; };
 		9FEC77C92BF4E81200523BCC /* FeedUserCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77C82BF4E81200523BCC /* FeedUserCoordinator.swift */; };
 		9FEC77CD2BF4E91800523BCC /* ProfileUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77CC2BF4E91800523BCC /* ProfileUserViewController.swift */; };
-		9FEC77CF2BF4E9ED00523BCC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77CE2BF4E9ED00523BCC /* User.swift */; };
-		9FEC77D12BF4EA7800523BCC /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FEC77D02BF4EA7800523BCC /* UserManager.swift */; };
 		9FF5FF402BD7F15A00EF7877 /* AddCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF5FF3F2BD7F15A00EF7877 /* AddCheckViewController.swift */; };
 		9FF5FF4B2BD7F7C300EF7877 /* AddChecklistCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF5FF4A2BD7F7C300EF7877 /* AddChecklistCoordinator.swift */; };
 		9FF5FF4D2BD7F8BA00EF7877 /* AddCheckListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF5FF4C2BD7F8BA00EF7877 /* AddCheckListViewModel.swift */; };
@@ -81,7 +79,7 @@
 		9F88E6602BB4C04E00EB8315 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		9F88E6642BB4C71300EB8315 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		9F88E6662BB4C72600EB8315 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		9FCA03362C10B0C500DEE5C0 /* checkListGerente.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = checkListGerente.app; path = "/Users/danilo/Documents/Swift projetos/checkListGerente/build/Debug-iphoneos/checkListGerente.app"; sourceTree = "<absolute>"; };
+		9F9CFED12C138B21002DF8DD /* checkListGerente.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = checkListGerente.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FCA03372C11044500DEE5C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9FEC77B82BF4E1BD00523BCC /* HomeUserCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserCoordinator.swift; sourceTree = "<group>"; };
 		9FEC77BA2BF4E1CA00523BCC /* HomeUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUserViewController.swift; sourceTree = "<group>"; };
@@ -91,8 +89,6 @@
 		9FEC77C62BF4E6E500523BCC /* FeedUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUserViewController.swift; sourceTree = "<group>"; };
 		9FEC77C82BF4E81200523BCC /* FeedUserCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUserCoordinator.swift; sourceTree = "<group>"; };
 		9FEC77CC2BF4E91800523BCC /* ProfileUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileUserViewController.swift; sourceTree = "<group>"; };
-		9FEC77CE2BF4E9ED00523BCC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		9FEC77D02BF4EA7800523BCC /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		9FF5FF3F2BD7F15A00EF7877 /* AddCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCheckViewController.swift; sourceTree = "<group>"; };
 		9FF5FF4A2BD7F7C300EF7877 /* AddChecklistCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChecklistCoordinator.swift; sourceTree = "<group>"; };
 		9FF5FF4C2BD7F8BA00EF7877 /* AddCheckListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCheckListViewModel.swift; sourceTree = "<group>"; };
@@ -173,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				9F88E62D2BB352A000EB8315 /* checkListGerente */,
+				9F9CFED12C138B21002DF8DD /* checkListGerente.app */,
 			);
 			sourceTree = "<group>";
 		};
@@ -232,8 +229,6 @@
 			isa = PBXGroup;
 			children = (
 				9F88E64C2BB4473400EB8315 /* LoadingButton.swift */,
-				9FEC77CE2BF4E9ED00523BCC /* User.swift */,
-				9FEC77D02BF4EA7800523BCC /* UserManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -467,7 +462,7 @@
 				9FA8B5A62BF5008300E48331 /* FirebaseStorageCombine-Community */,
 			);
 			productName = checkListGerente;
-			productReference = 9FCA03362C10B0C500DEE5C0 /* checkListGerente.app */;
+			productReference = 9F9CFED12C138B21002DF8DD /* checkListGerente.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -532,7 +527,6 @@
 				9F1B05212BD94F1700C3C264 /* ReportViewController.swift in Sources */,
 				9F88E6542BB4563700EB8315 /* SignUpViewModel.swift in Sources */,
 				9FEC77C92BF4E81200523BCC /* FeedUserCoordinator.swift in Sources */,
-				9FEC77CF2BF4E9ED00523BCC /* User.swift in Sources */,
 				9FF5FF4B2BD7F7C300EF7877 /* AddChecklistCoordinator.swift in Sources */,
 				9F88E62F2BB352A000EB8315 /* AppDelegate.swift in Sources */,
 				9F650A862BB5B5DD0083C792 /* FeedTableViewCell.swift in Sources */,
@@ -549,7 +543,6 @@
 				9FEC77BD2BF4E1D600523BCC /* HomeUserViewModel.swift in Sources */,
 				9FEC77BB2BF4E1CA00523BCC /* HomeUserViewController.swift in Sources */,
 				9F65DFF52BD99924002F24A3 /* FeedViewModel.swift in Sources */,
-				9FEC77D12BF4EA7800523BCC /* UserManager.swift in Sources */,
 				9F88E65F2BB4BFB100EB8315 /* HomeViewController.swift in Sources */,
 				9FEC77B92BF4E1BD00523BCC /* HomeUserCoordinator.swift in Sources */,
 				9F88E65D2BB4BD4B00EB8315 /* HomeCoordinator.swift in Sources */,
