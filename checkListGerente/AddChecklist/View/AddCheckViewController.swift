@@ -55,6 +55,7 @@ class AddCheckViewController: UIViewController {
         override func viewDidLoad() {
             super.viewDidLoad()
             navigationItem.title = "Novo checklist"
+            navigationController?.navigationBar.prefersLargeTitles = false
             view.backgroundColor = .systemBackground
 
             view.addSubview(scroll)

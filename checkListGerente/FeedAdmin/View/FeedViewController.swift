@@ -45,15 +45,14 @@ class FeedViewController: UIViewController {
     private func configureNavBar() {
         navigationItem.title = "Checklists"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
+        navigationItem.rightBarButtonItem?.tintColor = .systemOrange
         
-        // Botão para ativar o modo de edição
-      //  let editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(toggleEditMode))
         
         // Botão para deletar todos os checklists
         let deleteAllButton = UIBarButtonItem(title: "Delete All", style: .plain, target: self, action: #selector(deleteAllItems))
-        
+        deleteAllButton.tintColor = .systemRed
         navigationItem.leftBarButtonItems = [ deleteAllButton]
-        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     @objc private func handleChecklistItemUpdate() {
@@ -68,10 +67,6 @@ class FeedViewController: UIViewController {
         fetchItems()
     }
     
-//    @objc private func toggleEditMode() {
-//        homeFeedTable.setEditing(!homeFeedTable.isEditing, animated: true)
-//        homeFeedTable.reloadData()
-//    }
     
     @objc private func deleteAllItems() {
         let alertController = UIAlertController(title: "Delete All", message: "Tem certeza que quer apagar todos os checklists?", preferredStyle: .alert)
