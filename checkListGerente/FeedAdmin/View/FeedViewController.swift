@@ -12,7 +12,15 @@ class FeedViewController: UIViewController {
         }
     }
     var sortedDates: [String] {
-        return groupedChecklistItems.keys.sorted()
+        // Ordenar as datas em ordem decrescente para que as datas mais recentes apareçam primeiro
+        return groupedChecklistItems.keys.sorted(by: { dateString1, dateString2 in
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "pt_BR")
+            dateFormatter.dateFormat = "MMMM, dd"
+            guard let date1 = dateFormatter.date(from: dateString1),
+                  let date2 = dateFormatter.date(from: dateString2) else { return false }
+            return date1 > date2
+        })
     }
     
     private let refreshControl = UIRefreshControl()
@@ -47,8 +55,6 @@ class FeedViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItem))
         navigationItem.rightBarButtonItem?.tintColor = .systemOrange
         
-        
-        // Botão para deletar todos os checklists
         let deleteAllButton = UIBarButtonItem(title: "Delete All", style: .plain, target: self, action: #selector(deleteAllItems))
         deleteAllButton.tintColor = .systemRed
         navigationItem.leftBarButtonItems = [ deleteAllButton]
@@ -66,7 +72,6 @@ class FeedViewController: UIViewController {
     @objc private func refreshData() {
         fetchItems()
     }
-    
     
     @objc private func deleteAllItems() {
         let alertController = UIAlertController(title: "Delete All", message: "Tem certeza que quer apagar todos os checklists?", preferredStyle: .alert)
@@ -93,12 +98,18 @@ class FeedViewController: UIViewController {
     public func fetchItems(for date: Date? = nil) {
         PostService.shared.fetchAllItemsAdmin() { allItems in
             DispatchQueue.main.async {
-                self.groupedChecklistItems = Dictionary(grouping: allItems) { item in
+                let groupedItems = Dictionary(grouping: allItems) { item in
                     let dateFormatter = DateFormatter()
                     dateFormatter.locale = Locale(identifier: "pt_BR")
-                    dateFormatter.dateFormat = "MMMM, dd" // Agrupando por mês e dia
+                    dateFormatter.dateFormat = "MMMM, dd"
                     return dateFormatter.string(from: item.date)
                 }
+                
+                // Ordenar os itens dentro de cada grupo para que os itens não realizados fiquem em cima
+                for (key, items) in groupedItems {
+                    self.groupedChecklistItems[key] = items.sorted(by: { !$0.isComplete && $1.isComplete })
+                }
+                
                 self.homeFeedTable.reloadData()
                 self.refreshControl.endRefreshing()
             }
@@ -107,7 +118,7 @@ class FeedViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        homeFeedTable.frame = view.bounds // tableView na tela toda
+        homeFeedTable.frame = view.bounds
     }
     
     private func showCommentDetails(for item: ChecklistItem) {
@@ -129,7 +140,7 @@ extension FeedViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sortedDates[section].capitalized // Para capitalizar o mês
+        return sortedDates[section].capitalized
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -154,14 +165,12 @@ extension FeedViewController: UITableViewDataSource, UITableViewDelegate {
             cell.checklistItem = checklistItem
         }
 
-        // Adiciona o deslocamento para a direita quando estiver no modo de edição
         let editModePadding: CGFloat = homeFeedTable.isEditing ? 40 : 0
         cell.contentView.frame = cell.contentView.frame.offsetBy(dx: editModePadding, dy: 0)
         
         return cell
     }
     
-    // Suporte para deletar checklists individualmente
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let dateKey = sortedDates[indexPath.section]

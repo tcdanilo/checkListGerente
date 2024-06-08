@@ -21,10 +21,10 @@ struct ChecklistItem {
     init(keyID: String, dictionary: [String: Any]) {
         self.title = dictionary["title"] as? String ?? ""
         self.isComplete = dictionary["isComplete"] as? Bool ?? false
-        self.id = dictionary["id"] as? String ?? ""
+        self.id = keyID
         self.comment = dictionary["comment"] as? String ?? ""
         if let timestamp = dictionary["date"] as? TimeInterval {
-            self.date = Date(timeIntervalSince1970: timestamp) // Converte TimeInterval de volta para Date
+            self.date = Date(timeIntervalSince1970: timestamp)
         } else {
             self.date = Date()
         }
@@ -34,6 +34,7 @@ struct ChecklistItem {
             self.assignedUser = nil
         }
     }
+
 }
 
 struct AppUser {
@@ -109,7 +110,7 @@ struct PostService {
         db_reference.child("items").child(checklistID).updateChildValues(value, withCompletionBlock: completion)
     }
     
-    public func uploadChecklistItem(text: String, assignedUser: AppUser?,date : Date, completion: @escaping (Error?, DatabaseReference) -> Void) {
+    public func uploadChecklistItem(text: String, assignedUser: AppUser?, date: Date, completion: @escaping (Error?, DatabaseReference) -> Void) {
         let userDict = ["name": assignedUser?.name, "email": assignedUser?.email]
         let values: [String: Any] = [
             "title": text,
@@ -119,13 +120,16 @@ struct PostService {
         ]
         
         let id = db_reference.child("items").childByAutoId()
-        id.updateChildValues(values, withCompletionBlock: completion)
-        
         id.updateChildValues(values) { (err, ref) in
+            if let err = err {
+                completion(err, ref)
+                return
+            }
             let value = ["id": id.key!]
             db_reference.child("items").child(id.key!).updateChildValues(value, withCompletionBlock: completion)
         }
     }
+
     
     public func insertUser(with user: AppUser, uid: String) {
         db_reference.child("users").child(user.safeEmail).setValue([
@@ -135,17 +139,17 @@ struct PostService {
     }
     
     public func userExists(with email: String, completion: @escaping ((Bool)) -> Void) {
-        var safeEmail = email.replacingOccurrences(of: ".", with: "-")
-        safeEmail = email.replacingOccurrences(of: "@", with: "-")
-        
-        db_reference.child(safeEmail).observeSingleEvent(of: .value, with: { snapshot in
-            guard snapshot.value as? String != nil else {
-                completion(false)
-                return
-            }
-            completion(true)
-        })
-    }
+            let safeEmail = email.replacingOccurrences(of: ".", with: "-")
+                                    .replacingOccurrences(of: "@", with: "-")
+            
+            db_reference.child("users").child(safeEmail).observeSingleEvent(of: .value, with: { snapshot in
+                guard snapshot.value as? [String: Any] != nil else {
+                    completion(false)
+                    return
+                }
+                completion(true)
+            })
+        }
     
     public func fetchAllUsers(completion: @escaping ([AppUser]) -> Void) {
         db_reference.child("users").observeSingleEvent(of: .value) { snapshot in

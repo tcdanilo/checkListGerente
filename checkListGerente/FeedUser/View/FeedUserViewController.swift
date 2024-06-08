@@ -17,8 +17,9 @@ class FeedUserViewController: UIViewController {
         }
     }
     var sortedDates: [String] {
-        return groupedChecklistItems.keys.sorted()
+        return groupedChecklistItems.keys.sorted(by: >)
     }
+
     
     private let refreshControl = UIRefreshControl()
     
@@ -47,10 +48,20 @@ class FeedUserViewController: UIViewController {
     public func fetchItems() {
         guard let currentUser = Auth.auth().currentUser else { return }
         let user = AppUser(name: currentUser.displayName ?? "", email: currentUser.email ?? "")
-        
+
         PostService.shared.fetchAllItems(for: user) { allItems in
             DispatchQueue.main.async {
-                self.groupedChecklistItems = Dictionary(grouping: allItems) { item in
+                // Ordenar os itens pelo estado de conclusão e data
+                let sortedItems = allItems.sorted {
+                    if $0.isComplete != $1.isComplete {
+                        return !$0.isComplete && $1.isComplete
+                    } else {
+                        return $0.date > $1.date
+                    }
+                }
+
+                // Agrupar os itens ordenados por data
+                self.groupedChecklistItems = Dictionary(grouping: sortedItems) { item in
                     let dateFormatter = DateFormatter()
                     dateFormatter.locale = Locale(identifier: "pt_BR")
                     dateFormatter.dateFormat = "MMMM, dd" // Agrupando por mês e dia
@@ -61,6 +72,7 @@ class FeedUserViewController: UIViewController {
             }
         }
     }
+
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -97,6 +109,11 @@ class FeedUserViewController: UIViewController {
     }
     
     private func updateChecklistItem(_ item: ChecklistItem, at indexPath: IndexPath, with isComplete: Bool, comment: String) {
+        guard !item.id.isEmpty else {
+            print("Erro ao atualizar status: Checklist ID is empty")
+            return
+        }
+        
         PostService.shared.updateChecklistItemCompletionStatus(checklistID: item.id, isComplete: isComplete, comment: comment) { [weak self] error, ref in
             guard let self = self else { return }
             if error == nil {
@@ -115,6 +132,7 @@ class FeedUserViewController: UIViewController {
             }
         }
     }
+
 }
 
 extension FeedUserViewController: UITableViewDataSource, UITableViewDelegate {
