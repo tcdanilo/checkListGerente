@@ -27,7 +27,7 @@ O Aplicativo de Checklist Gerencial para Supermercados foi desenvolvido para oti
 * Firebase Storage: Para armazenamento das imagens de perfil dos usuários
 
 ### **📷 Capturas de Tela**
-![Login](Assets.xcassets/telaDeLogin.png)
+![Login](checkListGerente/assetsreadme/login.png)
 ![Home](Assets.xcassets/telaDeHome.png)
 ![Criar Checklist](Assets.xcassets/telaCriarChecklist.png)
 ![Realizar Checklist](Assets.xcassets/telaDeComentario.png)
