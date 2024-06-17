@@ -32,6 +32,8 @@ class FeedUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Checklists"
+        navigationController?.navigationBar.prefersLargeTitles = true
         viewModel = FeedUserViewModel()
         viewModel?.coordinator = FeedUserCoordinator(navigationController: navigationController!)
         view.backgroundColor = .systemBackground
