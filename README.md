@@ -32,6 +32,6 @@ O Aplicativo de Checklist Gerencial para Supermercados foi desenvolvido para oti
 ![Criar Checklist](Assets.xcassets/telaCriarChecklist.png)
 ![Realizar Checklist](Assets.xcassets/telaDeComentario.png)
 ![Relatórios](Assets.xcassets/telaDeRelatorios.png)
-![Home](Assets.xcassets/telaDePerfil.png)
+![Perfil](Assets.xcassets/telaDePerfil.png)
 
 
