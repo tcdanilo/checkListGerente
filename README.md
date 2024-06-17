@@ -28,10 +28,10 @@ O Aplicativo de Checklist Gerencial para Supermercados foi desenvolvido para oti
 
 ### **📷 Capturas de Tela**
 ![Login](checkListGerente/assetsreadme/login.png)
-![Home](Assets.xcassets/telaDeHome.png)
-![Criar Checklist](Assets.xcassets/telaCriarChecklist.png)
-![Realizar Checklist](Assets.xcassets/telaDeComentario.png)
-![Relatórios](Assets.xcassets/telaDeRelatorios.png)
-![Perfil](Assets.xcassets/telaDePerfil.png)
+![Home](checkListGerente/assetsreadme/home.png)
+![Criar Checklist](checkListGerente/assetsreadme/addchecklist.png)
+![Realizar Checklist](checkListGerente/assetsreadme/comentario.png)
+![Relatórios](checkListGerente/assetsreadme/relatorios.png)
+![Perfil](checkListGerente/assetsreadme/profile.png)
 
 
